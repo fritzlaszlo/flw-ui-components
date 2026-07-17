@@ -1,0 +1,19 @@
+.flw-spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.flw-spinner__char {
+  display: inline-block;
+  width: 1ch;
+  color: var(--c-green);
+}
+
+.flw-spinner__char--purple { color: var(--c-purple); }
+.flw-spinner__char--orange { color: var(--c-orange); }
+.flw-spinner__char--blue { color: var(--c-blue); }
+
+.flw-spinner__label {
+  color: var(--c-gray);
+}

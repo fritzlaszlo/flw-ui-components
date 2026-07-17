@@ -1,0 +1,26 @@
+{
+  "name": "flw",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Personal DIY terminal-style CSS library for self-hosted projects",
+  "style": "dist/flw.css",
+  "main": "dist/flw.js",
+  "files": [
+    "dist",
+    "fonts",
+    "src",
+    "js",
+    "examples"
+  ],
+  "scripts": {
+    "fetch-fonts": "node scripts/fetch-fonts.js",
+    "build": "node scripts/build.js",
+    "serve": "npm run build && npx --yes serve examples -p 5173"
+  },
+  "keywords": [
+    "css",
+    "terminal",
+    "self-hosted"
+  ],
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,27 @@
+.flw-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+.flw-progress__label {
+  min-width: 4ch;
+  text-align: right;
+  color: var(--c-white);
+}
+
+.flw-progress__bar {
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.flw-progress__bar--green { color: var(--c-green); }
+.flw-progress__bar--orange { color: var(--c-orange); }
+.flw-progress__bar--red { color: var(--c-red); }
+
+.flw-progress__value {
+  min-width: 4ch;
+  text-align: right;
+  color: var(--c-gray);
+}

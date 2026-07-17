@@ -1,0 +1,98 @@
+/* Page shell */
+.flw-page {
+  width: 100%;
+  min-height: 100%;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.flw-page__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.flw-page__title {
+  color: var(--c-white);
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+}
+
+/* Flex stacks */
+.flw-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.flw-stack--loose {
+  gap: var(--space-3);
+}
+
+.flw-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.flw-row--between {
+  justify-content: space-between;
+}
+
+/* Grid for placing boxes */
+.flw-grid {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.flw-grid > * {
+  min-width: 0;
+}
+
+.flw-cols-1 { grid-template-columns: 1fr; }
+.flw-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.flw-cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 720px) {
+  .flw-cols-2,
+  .flw-cols-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Wrapping control groups */
+.flw-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Key/value rows */
+.flw-stat-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.flw-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.flw-stat-row__label {
+  color: var(--c-gray);
+}
+
+.flw-stat-row__value {
+  color: var(--c-white);
+  text-align: right;
+}

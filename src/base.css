@@ -1,0 +1,44 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background: var(--c-bg);
+  color: var(--c-gray);
+  font-family: var(--font-mono);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Optional kiosk mode — opt in, not global default */
+.flw-kiosk,
+.flw-kiosk body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.flw-kiosk ::-webkit-scrollbar {
+  display: none;
+}
+
+/* Focus ring for interactive elements */
+:where(
+  .flw-btn,
+  .flw-input,
+  .flw-select,
+  .flw-toggle,
+  .flw-accordion__header,
+  .flw-tabs__tab,
+  .flw-details > summary
+):focus-visible {
+  outline: 1px solid var(--c-gray);
+  outline-offset: 2px;
+}

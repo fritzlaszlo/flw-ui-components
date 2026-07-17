@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>flw overview</title>
+  <link rel="stylesheet" href="dist/flw.css" />
+  <style>
+    .overview-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--c-bg);
+      border-bottom: 1px solid var(--c-dark-gray);
+      padding: var(--space-2) var(--space-3);
+    }
+    .overview-nav a {
+      color: var(--c-gray);
+      text-decoration: none;
+      margin-right: var(--space-2);
+    }
+    .overview-nav a:hover { color: var(--c-white); }
+    .overview-section { scroll-margin-top: 56px; }
+    .overview-section__title {
+      color: var(--c-white);
+      font-weight: 700;
+      margin-bottom: var(--space-2);
+    }
+    .swatch-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+    .swatch {
+      border: 1px solid var(--c-dark-gray);
+      padding: var(--space-2);
+      min-width: 120px;
+    }
+    .swatch__chip {
+      width: 100%;
+      height: 24px;
+      border: 1px solid var(--c-dark-gray);
+      margin-bottom: var(--space-1);
+    }
+    .demo-block { margin-bottom: var(--space-3); }
+    .demo-label {
+      color: var(--c-blue);
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-1);
+    }
+  </style>
+</head>
+<body>
+  <nav class="overview-nav flw-mono">
+    <a href="#tokens">tokens</a>
+    <a href="#typography">typography</a>
+    <a href="#utilities">utilities</a>
+    <a href="#layout">layout</a>
+    <a href="#components">components</a>
+    <a href="#patterns">patterns</a>
+    <a href="#js">js</a>
+  </nav>
+
+  <main class="flw-page">
+    <header class="flw-page__header">
+      <h1 class="flw-page__title">flw overview</h1>
+      <span class="flw-text-gray flw-sm">visual catalog / debug surface</span>
+    </header>
+
+    <!-- TOKENS -->
+    <section id="tokens" class="overview-section flw-stack flw-stack--loose">
+      <h2 class="overview-section__title">tokens</h2>
+
+      <div class="demo-block">
+        <div class="demo-label">core palette</div>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch__chip" style="background:var(--c-bg)"></div><span class="flw-sm">--c-bg</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--c-dark-gray)"></div><span class="flw-sm">--c-dark-gray</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--c-gray)"></div><span class="flw-sm">--c-gray</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--c-white)"></div><span class="flw-sm">--c-white</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--c-red)"></div><span class="flw-sm">--c-red</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--c-green)"></div><span class="flw-sm">--c-green</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--c-orange)"></div><span class="flw-sm">--c-orange</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--c-blue)"></div><span class="flw-sm">--c-blue</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:var(--c-purple)"></div><span class="flw-sm">--c-purple</span></div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">data register</div>
+        <div class="flw-row flw-gap-3">
+          <span class="flw-data-very-cold">very cold</span>
+          <span class="flw-data-cold">cold</span>
+          <span class="flw-data-mild">mild</span>
+          <span class="flw-data-warm">warm</span>
+          <span class="flw-data-hot">hot</span>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">type scale</div>
+        <p class="flw-sm">small (--font-size-sm)</p>
+        <p>base (--font-size)</p>
+        <p class="flw-lg">large (--font-size-lg)</p>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">spacing</div>
+        <div class="flw-row flw-gap-4">
+          <span class="flw-border flw-p-1 flw-sm">space-1</span>
+          <span class="flw-border flw-p-2 flw-sm">space-2</span>
+          <span class="flw-border flw-p-3 flw-sm">space-3</span>
+          <span class="flw-border flw-p-4 flw-sm">space-4</span>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">glow sample</div>
+        <span class="flw-led flw-led--on"></span>
+        <span class="flw-text-gray flw-sm"> rgba(var(--c-green-rgb), 0.45)</span>
+      </div>
+    </section>
+
+    <hr class="flw-rule" />
+
+    <!-- TYPOGRAPHY -->
+    <section id="typography" class="overview-section flw-stack flw-stack--loose">
+      <h2 class="overview-section__title">typography</h2>
+      <p class="flw-text-gray flw-sm">fonts ship with flw (Space Mono + Noto Emoji, SIL OFL) — no network required</p>
+
+      <div class="flw-grid flw-cols-2">
+        <div class="flw-box">
+          <div class="flw-box__title"><span class="flw-box__title-text">prose / notes</span></div>
+          <div class="flw-box__content flw-prose flw-sm">
+            <p>
+              This interface is meant to run for days on hardware you own: a Pi in the studio,
+              a NUC in the basement, a tiny VM on the intranet. The type stays at one base size
+              most of the time — <strong>weight and color carry hierarchy</strong>, not headline inflation.
+            </p>
+            <p>
+              Longer copy still belongs in the same monospace voice. Think release notes, irrigation
+              schedules, or a short explanation of why a service is down — not marketing paragraphs.
+            </p>
+          </div>
+        </div>
+
+        <div class="flw-box">
+          <div class="flw-box__title"><span class="flw-box__title-text">log excerpt</span></div>
+          <div class="flw-box__content flw-prose flw-sm flw-data-row">
+            <p><span class="flw-text-dark">2026-07-17 19:12</span> tailscale connected <span class="flw-text-green">ok</span></p>
+            <p><span class="flw-text-dark">2026-07-17 19:14</span> zone-a valve open <span class="flw-text-orange">18min</span></p>
+            <p><span class="flw-text-dark">2026-07-17 19:32</span> zone-a complete <span class="flw-text-green">ok</span></p>
+            <p><span class="flw-text-dark">2026-07-17 19:33</span> humidity sensor stale <span class="flw-stale">retry in 5m</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">icon tiers — glyphs → mono emoji → color anchor</div>
+        <div class="flw-box">
+          <div class="flw-box__content flw-stack">
+            <div class="flw-stat-row">
+              <span class="flw-stat-row__label">tier 1 · glyphs</span>
+              <span class="flw-stat-row__value flw-text-green">● ○ █ ░ ▶ ▼</span>
+            </div>
+            <div class="flw-stat-row">
+              <span class="flw-stat-row__label">tier 2 · mono emoji</span>
+              <span class="flw-stat-row__value">
+                <span class="flw-emoji flw-emoji--dark" aria-hidden="true">🌑</span>
+                <span class="flw-emoji flw-emoji--dim" aria-hidden="true">🌒</span>
+                <span class="flw-emoji flw-emoji--blue" aria-hidden="true">🌓</span>
+                <span class="flw-emoji flw-emoji--purple" aria-hidden="true">🌔</span>
+                <span class="flw-emoji flw-emoji--white" aria-hidden="true">🌕</span>
+                <span class="flw-sep flw-sep--slash"></span>
+                <span class="flw-emoji flw-emoji--blue" aria-hidden="true">☁</span>
+                <span class="flw-emoji flw-emoji--blue" aria-hidden="true">🌧</span>
+                <span class="flw-emoji flw-emoji--orange" aria-hidden="true">⛈</span>
+                <span class="flw-emoji flw-emoji--purple" aria-hidden="true">🌙</span>
+              </span>
+            </div>
+            <div class="flw-stat-row">
+              <span class="flw-stat-row__label">tier 3 · color anchor</span>
+              <span class="flw-stat-row__value">
+                <span class="flw-emoji--color" aria-hidden="true">🪴</span>
+                <span class="flw-text-gray"> once per project — irrigation personality</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">weather row — palette highlights on mono emoji</div>
+        <div class="flw-box flw-box--active" style="max-width:480px">
+          <div class="flw-box__title">
+            <span class="flw-box__title-text">forecast</span>
+            <span class="flw-box__title-extra">
+              <span class="flw-emoji flw-emoji--purple">🌙</span>
+              <span class="flw-text-gray flw-sm">waxing</span>
+            </span>
+          </div>
+          <div class="flw-box__content">
+            <div class="flw-row flw-justify-between flw-gap-2">
+              <span class="flw-emoji flw-emoji--green flw-sm" title="clear">☀</span>
+              <span class="flw-emoji flw-emoji--dim flw-sm" title="partly">⛅</span>
+              <span class="flw-emoji flw-emoji--blue flw-sm" title="cloudy">☁</span>
+              <span class="flw-emoji flw-emoji--blue flw-sm" title="rain">🌧</span>
+              <span class="flw-emoji flw-emoji--orange flw-sm" title="storm">⛈</span>
+              <span class="flw-emoji flw-emoji--data-cold flw-sm" title="cold night">🌙</span>
+            </div>
+            <hr class="flw-rule" />
+            <p class="flw-prose flw-sm">
+              Noto Emoji replaces system emoji but is <strong>recolored through CSS</strong> —
+              same palette as text. Use <code class="flw-text-white">.flw-emoji--green</code> for clear/sunny,
+              <code class="flw-text-white">--blue</code> for rain/cloud,
+              <code class="flw-text-white">--orange</code> for storms,
+              <code class="flw-text-white">--purple</code> for moon/night.
+              Resting icons stay <code class="flw-text-white">--dim</code> or <code class="flw-text-white">--dark</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="flw-rule" />
+
+    <!-- UTILITIES -->
+    <section id="utilities" class="overview-section flw-stack flw-stack--loose">
+      <h2 class="overview-section__title">utilities</h2>
+      <div class="flw-row flw-flex-wrap flw-gap-2">
+        <span class="flw-text-white">white</span>
+        <span class="flw-text-gray">gray</span>
+        <span class="flw-text-red">red</span>
+        <span class="flw-text-green">green</span>
+        <span class="flw-text-orange">orange</span>
+        <span class="flw-text-blue">blue</span>
+        <span class="flw-text-purple">purple</span>
+        <span class="flw-dim">dim</span>
+        <span class="flw-stale">stale</span>
+        <span class="flw-bold">bold</span>
+      </div>
+      <hr class="flw-rule" />
+      <span class="flw-text-purple">meta</span><span class="flw-sep flw-sep--slash"></span><span class="flw-text-gray">value</span><span class="flw-sep flw-sep--dot"></span><span class="flw-text-gray">more</span>
+    </section>
+
+    <hr class="flw-rule" />
+
+    <!-- LAYOUT -->
+    <section id="layout" class="overview-section flw-stack flw-stack--loose">
+      <h2 class="overview-section__title">layout</h2>
+
+      <div class="demo-block">
+        <div class="demo-label">flw-grid flw-cols-3</div>
+        <div class="flw-grid flw-cols-3">
+          <div class="flw-box"><div class="flw-box__title"><span class="flw-box__title-text">a</span></div><div class="flw-box__content flw-text-gray">cell</div></div>
+          <div class="flw-box"><div class="flw-box__title"><span class="flw-box__title-text">b</span></div><div class="flw-box__content flw-text-gray">cell</div></div>
+          <div class="flw-box"><div class="flw-box__title"><span class="flw-box__title-text">c</span></div><div class="flw-box__content flw-text-gray">cell</div></div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">flw-stat-rows</div>
+        <div class="flw-box" style="max-width:320px">
+          <div class="flw-box__content">
+            <div class="flw-stat-rows">
+              <div class="flw-stat-row"><span class="flw-stat-row__label">ip</span><span class="flw-stat-row__value">192.168.1.42</span></div>
+              <div class="flw-stat-row"><span class="flw-stat-row__label">ping</span><span class="flw-stat-row__value flw-text-green">12ms</span></div>
+              <div class="flw-stat-row"><span class="flw-stat-row__label">tailscale</span><span class="flw-stat-row__value">connected</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">flw-cluster</div>
+        <div class="flw-cluster">
+          <button type="button" class="flw-btn">default</button>
+          <button type="button" class="flw-btn flw-btn--primary">primary</button>
+          <button type="button" class="flw-btn flw-btn--danger">danger</button>
+        </div>
+      </div>
+    </section>
+
+    <hr class="flw-rule" />
+
+    <!-- COMPONENTS -->
+    <section id="components" class="overview-section flw-stack flw-stack--loose">
+      <h2 class="overview-section__title">components</h2>
+
+      <div class="flw-grid flw-cols-2">
+        <div class="flw-box">
+          <div class="flw-box__title"><span class="flw-box__title-text">box</span></div>
+          <div class="flw-box__content flw-text-gray">default resting border</div>
+        </div>
+        <div class="flw-box flw-box--active">
+          <div class="flw-box__title"><span class="flw-box__title-text">box --active</span></div>
+          <div class="flw-box__content flw-text-gray">elevated border</div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">progress (static + JS-driven)</div>
+        <div class="flw-progress">
+          <span class="flw-progress__label">cpu</span>
+          <span class="flw-progress__bar flw-progress__bar--green">████████░░░░░░░░░░░░</span>
+          <span class="flw-progress__value">42%</span>
+        </div>
+        <div class="flw-progress" data-flw-bar data-flw-bar-value="82" data-flw-bar-width="20">
+          <span class="flw-progress__label">mem</span>
+          <span class="flw-progress__bar"></span>
+          <span class="flw-progress__value"></span>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">status</div>
+        <div class="flw-row flw-gap-3">
+          <span><span class="flw-dot flw-dot--up"></span> up</span>
+          <span><span class="flw-dot flw-dot--down"></span> down</span>
+          <span class="flw-led-row"><span class="flw-led flw-led--on"></span> on</span>
+          <span class="flw-led-row"><span class="flw-led flw-led--off"></span> off</span>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">spinner</div>
+        <span class="flw-spinner" data-flw-spinner>
+          <span class="flw-spinner__char"></span>
+          <span class="flw-spinner__label">loading</span>
+        </span>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">forms</div>
+        <div class="flw-stack" style="max-width:360px">
+          <div class="flw-field">
+            <label class="flw-field__label" for="host">host</label>
+            <input class="flw-input" id="host" type="text" placeholder="vm-01.local" />
+          </div>
+          <div class="flw-field">
+            <label class="flw-field__label" for="zone">zone</label>
+            <select class="flw-select" id="zone">
+              <option>balcony-a</option>
+              <option>balcony-b</option>
+            </select>
+          </div>
+          <label class="flw-toggle">
+            <input class="flw-toggle__input" type="checkbox" checked />
+            <span class="flw-toggle__switch"></span>
+            <span class="flw-toggle__label">irrigation enabled</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <hr class="flw-rule" />
+
+    <!-- PATTERNS -->
+    <section id="patterns" class="overview-section flw-stack flw-stack--loose">
+      <h2 class="overview-section__title">patterns</h2>
+
+      <div class="flw-grid flw-cols-2">
+        <div class="flw-box">
+          <div class="flw-box__title"><span class="flw-box__title-text">control panel</span></div>
+          <div class="flw-box__content flw-stack">
+            <label class="flw-toggle">
+              <input class="flw-toggle__input" type="checkbox" />
+              <span class="flw-toggle__switch"></span>
+              <span class="flw-toggle__label">vm-web-01</span>
+            </label>
+            <label class="flw-toggle">
+              <input class="flw-toggle__input" type="checkbox" checked />
+              <span class="flw-toggle__switch"></span>
+              <span class="flw-toggle__label">vm-db-01</span>
+            </label>
+            <div class="flw-cluster">
+              <button type="button" class="flw-btn flw-btn--primary">start all</button>
+              <button type="button" class="flw-btn flw-btn--danger">stop all</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flw-box">
+          <div class="flw-box__title">
+            <span class="flw-box__title-text">status strip</span>
+            <span class="flw-box__title-extra">
+              <span class="flw-dot flw-dot--up"></span>
+              <span class="flw-sep flw-sep--slash"></span>
+              <span class="flw-text-gray flw-sm">3/3</span>
+            </span>
+          </div>
+          <div class="flw-box__content">
+            <span class="flw-spinner" data-flw-spinner>
+              <span class="flw-spinner__char flw-spinner__char--purple"></span>
+            </span>
+            <span class="flw-text-gray"> syncing…</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="flw-rule" />
+
+    <!-- JS WIDGETS -->
+    <section id="js" class="overview-section flw-stack flw-stack--loose">
+      <h2 class="overview-section__title">js widgets</h2>
+
+      <div class="demo-block" id="accordion">
+        <div class="demo-label">accordion (single)</div>
+        <div class="flw-accordion" data-flw-accordion="single">
+          <div class="flw-accordion__item flw-accordion__item--open">
+            <button type="button" class="flw-accordion__header">
+              <span class="flw-accordion__marker"></span>
+              <span>hosts</span>
+            </button>
+            <div class="flw-accordion__panel">
+              <div class="flw-stat-rows">
+                <div class="flw-stat-row"><span class="flw-stat-row__label">ratte</span><span class="flw-stat-row__value flw-text-green">up</span></div>
+                <div class="flw-stat-row"><span class="flw-stat-row__label">nuc</span><span class="flw-stat-row__value flw-text-green">up</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="flw-accordion__item">
+            <button type="button" class="flw-accordion__header">
+              <span class="flw-accordion__marker"></span>
+              <span>services</span>
+            </button>
+            <div class="flw-accordion__panel">
+              <span class="flw-text-gray">docker list…</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">accordion (CSS-only details)</div>
+        <details class="flw-details">
+          <summary>logs</summary>
+          <div class="flw-details__body flw-text-gray flw-sm">
+            [2026-07-17 19:00] irrigation zone-a started<br />
+            [2026-07-17 19:05] zone-a complete
+          </div>
+        </details>
+      </div>
+
+      <div class="demo-block" id="tabs">
+        <div class="demo-label">tabs</div>
+        <div class="flw-tabs" data-flw-tabs style="max-width:480px">
+          <div class="flw-tabs__bar">
+            <button type="button" class="flw-tabs__tab">status</button>
+            <button type="button" class="flw-tabs__tab">config</button>
+            <button type="button" class="flw-tabs__tab">logs</button>
+          </div>
+          <div class="flw-tabs__panels">
+            <div class="flw-tabs__panel">
+              <span class="flw-dot flw-dot--up"></span>
+              <span class="flw-text-gray"> all systems nominal</span>
+            </div>
+            <div class="flw-tabs__panel">
+              <div class="flw-field">
+                <label class="flw-field__label">interval</label>
+                <input class="flw-input" type="text" value="30m" />
+              </div>
+            </div>
+            <div class="flw-tabs__panel flw-text-gray flw-sm">no recent errors</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">marquee (default — no border)</div>
+        <div class="flw-marquee" data-flw-marquee style="max-width:320px">
+          <div class="flw-marquee__track">
+            <span class="flw-marquee__chunk flw-text-white">
+              now playing: ambient field recording from güterbahnhof
+              <span class="flw-marquee__sep flw-dim"> · </span>
+            </span>
+            <span class="flw-marquee__chunk flw-text-white" aria-hidden="true">
+              now playing: ambient field recording from güterbahnhof
+              <span class="flw-marquee__sep flw-dim"> · </span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">marquee --ruled / --box</div>
+        <div class="flw-stack" style="max-width:320px">
+          <div class="flw-marquee flw-marquee--ruled" data-flw-marquee>
+            <div class="flw-marquee__track">
+              <span class="flw-marquee__chunk flw-text-gray flw-sm">bottom rule only</span>
+              <span class="flw-marquee__chunk flw-text-gray flw-sm" aria-hidden="true">bottom rule only</span>
+            </div>
+          </div>
+          <div class="flw-marquee flw-marquee--box" data-flw-marquee>
+            <div class="flw-marquee__track">
+              <span class="flw-marquee__chunk flw-text-white">boxed marquee frame</span>
+              <span class="flw-marquee__chunk flw-text-white" aria-hidden="true">boxed marquee frame</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="dist/flw.js"></script>
+  <script>flw.auto()</script>
+</body>
+</html>

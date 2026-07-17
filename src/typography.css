@@ -1,0 +1,43 @@
+/* Long-form text inside boxes / panels */
+.flw-prose {
+  color: var(--c-gray);
+  line-height: var(--line-height);
+}
+
+.flw-prose p + p {
+  margin-top: var(--space-2);
+}
+
+.flw-prose strong {
+  color: var(--c-white);
+  font-weight: 700;
+}
+
+/* Mono emoji — tier 2 iconography (Noto Emoji recolored via CSS, not system color) */
+.flw-emoji {
+  font-family: var(--font-emoji);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* Resting / subordinate */
+.flw-emoji--dim { color: var(--c-gray); }
+.flw-emoji--dark { color: var(--c-dark-gray); }
+
+/* Palette highlights — same semantics as text colors */
+.flw-emoji--white { color: var(--c-white); }
+.flw-emoji--green { color: var(--c-green); }
+.flw-emoji--red { color: var(--c-red); }
+.flw-emoji--orange { color: var(--c-orange); }
+.flw-emoji--blue { color: var(--c-blue); }
+.flw-emoji--purple { color: var(--c-purple); }
+
+/* Data register highlights (quantities, not status) */
+.flw-emoji--data-cold { color: var(--c-data-cold); }
+.flw-emoji--data-warm { color: var(--c-data-warm); }
+
+/* Full-color personality anchor — tier 3, no color override */
+.flw-emoji--color {
+  font-family: var(--font-emoji);
+}

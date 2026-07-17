@@ -1,0 +1,51 @@
+.flw-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--c-dark-gray);
+  background: transparent;
+  color: var(--c-gray);
+  font-family: var(--font-mono);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.flw-btn:hover:not(:disabled) {
+  border-color: var(--c-gray);
+  color: var(--c-white);
+}
+
+.flw-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.flw-btn--primary {
+  border-color: var(--c-green);
+  color: var(--c-green);
+}
+
+.flw-btn--primary:hover:not(:disabled) {
+  border-color: var(--c-green);
+  color: var(--c-white);
+}
+
+.flw-btn--danger {
+  border-color: var(--c-red);
+  color: var(--c-red);
+}
+
+.flw-btn--danger:hover:not(:disabled) {
+  border-color: var(--c-red);
+  color: var(--c-white);
+}
+
+.flw-btn--active {
+  border-color: var(--c-gray);
+  color: var(--c-white);
+}

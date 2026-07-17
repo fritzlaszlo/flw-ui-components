@@ -1,0 +1,56 @@
+/* Glyph status dots */
+.flw-dot {
+  display: inline-block;
+  line-height: 1;
+}
+
+.flw-dot--up {
+  color: var(--c-green);
+}
+
+.flw-dot--up::before {
+  content: '●';
+}
+
+.flw-dot--down {
+  color: var(--c-red);
+}
+
+.flw-dot--down::before {
+  content: '○';
+}
+
+.flw-dot--warn {
+  color: var(--c-orange);
+}
+
+.flw-dot--warn::before {
+  content: '●';
+}
+
+/* Power LED indicator */
+.flw-led {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.flw-led--on {
+  background: var(--c-green);
+  box-shadow: 0 0 4px rgba(var(--c-green-rgb), 0.45);
+}
+
+.flw-led--off {
+  background: transparent;
+  border: 1.5px solid var(--c-red);
+  opacity: 0.9;
+}
+
+.flw-led-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}

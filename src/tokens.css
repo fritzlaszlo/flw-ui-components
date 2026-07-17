@@ -1,0 +1,40 @@
+:root {
+  /* Core palette */
+  --c-bg: #000000;
+  --c-dark-gray: #333333;
+  --c-gray: #888888;
+  --c-white: #ededed;
+  --c-red: #ff5555;
+  --c-green: #50fa7b;
+  --c-blue: #6272a4;
+  --c-purple: #bd93f9;
+  --c-orange: #ffb86c;
+
+  /* RGB triplets for rgba() glows */
+  --c-red-rgb: 255, 85, 85;
+  --c-green-rgb: 80, 250, 123;
+  --c-blue-rgb: 98, 114, 164;
+  --c-purple-rgb: 189, 147, 249;
+  --c-orange-rgb: 255, 184, 108;
+
+  /* Typography */
+  --font-mono: 'Space Mono', 'DejaVu Sans Mono', 'Courier New', monospace;
+  --font-emoji: 'Noto Emoji', sans-serif;
+  --font-size: 16px;
+  --font-size-sm: 12px;
+  --font-size-lg: 1.25rem;
+  --line-height: 1.4;
+
+  /* Spacing (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+
+  /* Data / pastel register (lighter than status colors) */
+  --c-data-very-cold: #e8d4ff;
+  --c-data-cold: #b8e7ff;
+  --c-data-mild: #f8f8f2;
+  --c-data-warm: #ffd49a;
+  --c-data-hot: #ffabab;
+}

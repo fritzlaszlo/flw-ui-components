@@ -1,0 +1,110 @@
+/* JS-driven accordion */
+.flw-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.flw-accordion__item {
+  border: 1px solid var(--c-dark-gray);
+}
+
+.flw-accordion__item--open {
+  border-color: var(--c-gray);
+}
+
+.flw-accordion__header {
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 2px var(--space-2);
+  border: none;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: var(--c-white);
+  font-family: var(--font-mono);
+  font-size: var(--font-size);
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.flw-accordion__item--open .flw-accordion__header {
+  border-bottom-color: var(--c-dark-gray);
+}
+
+.flw-accordion__marker {
+  color: var(--c-gray);
+  width: 1ch;
+  flex-shrink: 0;
+}
+
+.flw-accordion__item--open .flw-accordion__marker {
+  color: var(--c-white);
+}
+
+.flw-accordion__marker::before {
+  content: '▶';
+}
+
+.flw-accordion__item--open .flw-accordion__marker::before {
+  content: '▼';
+}
+
+.flw-accordion__panel {
+  display: none;
+  padding: var(--space-2);
+}
+
+.flw-accordion__item--open .flw-accordion__panel {
+  display: block;
+}
+
+.flw-accordion__panel[hidden] {
+  display: none !important;
+}
+
+/* CSS-only fallback via details/summary */
+.flw-details {
+  border: 1px solid var(--c-dark-gray);
+}
+
+.flw-details[open] {
+  border-color: var(--c-gray);
+}
+
+.flw-details > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 2px var(--space-2);
+  color: var(--c-white);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.flw-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.flw-details > summary::before {
+  content: '▶';
+  color: var(--c-gray);
+  width: 1ch;
+}
+
+.flw-details[open] > summary::before {
+  content: '▼';
+  color: var(--c-white);
+}
+
+.flw-details[open] > summary {
+  border-bottom: 1px solid var(--c-dark-gray);
+}
+
+.flw-details__body {
+  padding: var(--space-2);
+}

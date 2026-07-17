@@ -1,0 +1,16 @@
+.flw-sep {
+  color: var(--c-purple);
+  user-select: none;
+}
+
+.flw-sep--slash::before {
+  content: '/';
+}
+
+.flw-sep--pipe::before {
+  content: '│';
+}
+
+.flw-sep--dot::before {
+  content: '·';
+}
