@@ -12,6 +12,7 @@ const fontsDir = path.join(root, 'fonts')
 
 const cssFiles = [
   'fonts.css',
+  'glyphs.css',
   'tokens.css',
   'base.css',
   'utilities.css',
@@ -23,6 +24,7 @@ const cssFiles = [
   'components/slider.css',
   'components/range.css',
   'components/progress.css',
+  'components/shade.css',
   'components/status.css',
   'components/spinner.css',
   'components/sep.css',

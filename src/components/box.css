@@ -25,6 +25,15 @@
   font-weight: 700;
 }
 
+/* Mono emoji in front of the title — one per box, gray, from the project's theme */
+.flw-box__icon {
+  margin-right: 1ch;
+  font-family: var(--font-emoji);
+  font-variant-emoji: text;
+  font-weight: 400;
+  color: var(--c-gray);
+}
+
 .flw-box__title-extra {
   font-weight: 400;
   white-space: nowrap;

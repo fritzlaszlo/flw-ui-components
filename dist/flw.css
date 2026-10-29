@@ -153,6 +153,45 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* ── glyphs.css ── */
+/* Terminal glyphs Space Mono lacks — DejaVu subsets (scripts/fetch-glyphs.py).
+   Same face on every device: █ ░ ▒ ▓ ● ○ ■ ▶ ▼ ─ │ ┌ ⠋ … */
+@font-face {
+  font-family: 'flw Glyphs';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('fonts/flw-glyphs-400.woff2') format('woff2');
+  unicode-range: U+2190, U+2192, U+2194-21FF, U+2500-25FF;
+}
+
+@font-face {
+  font-family: 'flw Glyphs';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url('fonts/flw-glyphs-700.woff2') format('woff2');
+  unicode-range: U+2190, U+2192, U+2194-21FF, U+2500-25FF;
+}
+
+@font-face {
+  font-family: 'flw Glyphs';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('fonts/flw-glyphs-braille-400.woff2') format('woff2');
+  unicode-range: U+2800-28FF;
+}
+
+@font-face {
+  font-family: 'flw Glyphs';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url('fonts/flw-glyphs-braille-700.woff2') format('woff2');
+  unicode-range: U+2800-28FF;
+}
+
 /* ── tokens.css ── */
 :root {
   /* Core palette */
@@ -174,7 +213,7 @@
   --c-orange-rgb: 255, 184, 108;
 
   /* Typography */
-  --font-mono: 'Space Mono', 'DejaVu Sans Mono', 'Courier New', monospace;
+  --font-mono: 'flw Glyphs', 'Space Mono', 'DejaVu Sans Mono', 'Courier New', monospace;
   --font-emoji: 'Noto Emoji', sans-serif;
   --font-size: 16px;
   --font-size-sm: 12px;
@@ -269,6 +308,7 @@ body {
 /* Typography helpers */
 .flw-mono { font-family: var(--font-mono); }
 .flw-bold { font-weight: 700; }
+.flw-strike { text-decoration: line-through; }
 
 /* Flex / gap / padding utilities */
 .flw-sm { font-size: var(--font-size-sm); }
@@ -349,6 +389,7 @@ body {
 /* Mono emoji — tier 2 iconography (Noto Emoji recolored via CSS, not system color) */
 .flw-emoji {
   font-family: var(--font-emoji);
+  font-variant-emoji: text;
   font-style: normal;
   font-weight: 400;
   line-height: 1;
@@ -367,12 +408,16 @@ body {
 .flw-emoji--purple { color: var(--c-purple); }
 
 /* Data register highlights (quantities, not status) */
+.flw-emoji--data-very-cold { color: var(--c-data-very-cold); }
 .flw-emoji--data-cold { color: var(--c-data-cold); }
+.flw-emoji--data-mild { color: var(--c-data-mild); }
 .flw-emoji--data-warm { color: var(--c-data-warm); }
+.flw-emoji--data-hot { color: var(--c-data-hot); }
 
-/* Full-color personality anchor — tier 3, no color override */
+/* Full-color personality anchor — tier 3, system color emoji (Noto Emoji is mono) */
 .flw-emoji--color {
-  font-family: var(--font-emoji);
+  font-family: 'Apple Color Emoji', 'Noto Color Emoji', 'Segoe UI Emoji', sans-serif;
+  font-variant-emoji: emoji;
 }
 
 /* ── layout.css ── */
@@ -444,6 +489,32 @@ body {
   }
 }
 
+/* Aligned rows: columns line up across every row (label · content · value) */
+.flw-data-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-1) 1ch;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.flw-data-grid--4 {
+  grid-template-columns: auto 1fr auto auto;
+}
+
+.flw-data-grid > * {
+  min-width: 0;
+}
+
+.flw-data-grid__num {
+  justify-self: end;
+}
+
+.flw-data-grid__full {
+  grid-column: 1 / -1;
+}
+
 /* Wrapping control groups */
 .flw-cluster {
   display: flex;
@@ -501,6 +572,15 @@ body {
 .flw-box__title-text {
   color: var(--c-white);
   font-weight: 700;
+}
+
+/* Mono emoji in front of the title — one per box, gray, from the project's theme */
+.flw-box__icon {
+  margin-right: 1ch;
+  font-family: var(--font-emoji);
+  font-variant-emoji: text;
+  font-weight: 400;
+  color: var(--c-gray);
 }
 
 .flw-box__title-extra {
@@ -862,10 +942,49 @@ body {
 .flw-progress__bar--orange { color: var(--c-orange); }
 .flw-progress__bar--red { color: var(--c-red); }
 
+/* Identity colors (cpu / mem / disk …) — severity still overrides above 70 / 90 % */
+.flw-progress__bar--blue { color: var(--c-blue); }
+.flw-progress__bar--purple { color: var(--c-purple); }
+.flw-progress__bar--white { color: var(--c-white); }
+.flw-progress__bar--gray { color: var(--c-gray); }
+
 .flw-progress__value {
   min-width: 4ch;
   text-align: right;
   color: var(--c-gray);
+}
+
+/* ── components/shade.css ── */
+/* Shade cell — intensity as ░ ▒ ▓ texture behind a value (rain chance, load, signal) */
+.flw-shade {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4ch;
+  padding: 0 var(--space-1);
+  overflow: hidden;
+  color: var(--c-blue);
+}
+
+.flw-shade::before {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: 0;
+  text-align: center;
+  content: '';
+}
+
+.flw-shade--1::before { content: '░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░'; }
+.flw-shade--2::before { content: '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'; }
+.flw-shade--3::before { content: '▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓'; }
+
+.flw-shade__value {
+  position: relative;
+  color: var(--c-white);
+  font-weight: 700;
 }
 
 /* ── components/status.css ── */
@@ -897,6 +1016,17 @@ body {
 
 .flw-dot--warn::before {
   content: '●';
+}
+
+/* Asleep / parked — not down, so purple instead of red */
+.flw-dot--sleep {
+  color: var(--c-purple);
+}
+
+.flw-dot--sleep::before {
+  content: '💤';
+  font-family: var(--font-emoji);
+  font-variant-emoji: text;
 }
 
 /* Power LED indicator */
@@ -996,6 +1126,11 @@ body {
 
 .flw-marquee__track--anim {
   animation: flw-marquee-scroll var(--flw-marquee-dur, 12s) linear infinite;
+}
+
+/* Ticker feel: jumps at a low frame rate instead of gliding (JS sets the step count) */
+.flw-marquee--stepped .flw-marquee__track--anim {
+  animation-timing-function: steps(var(--flw-marquee-steps, 100));
 }
 
 @media (prefers-reduced-motion: reduce) {

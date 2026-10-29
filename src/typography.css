@@ -16,6 +16,7 @@
 /* Mono emoji — tier 2 iconography (Noto Emoji recolored via CSS, not system color) */
 .flw-emoji {
   font-family: var(--font-emoji);
+  font-variant-emoji: text;
   font-style: normal;
   font-weight: 400;
   line-height: 1;
@@ -34,10 +35,14 @@
 .flw-emoji--purple { color: var(--c-purple); }
 
 /* Data register highlights (quantities, not status) */
+.flw-emoji--data-very-cold { color: var(--c-data-very-cold); }
 .flw-emoji--data-cold { color: var(--c-data-cold); }
+.flw-emoji--data-mild { color: var(--c-data-mild); }
 .flw-emoji--data-warm { color: var(--c-data-warm); }
+.flw-emoji--data-hot { color: var(--c-data-hot); }
 
-/* Full-color personality anchor — tier 3, no color override */
+/* Full-color personality anchor — tier 3, system color emoji (Noto Emoji is mono) */
 .flw-emoji--color {
-  font-family: var(--font-emoji);
+  font-family: 'Apple Color Emoji', 'Noto Color Emoji', 'Segoe UI Emoji', sans-serif;
+  font-variant-emoji: emoji;
 }

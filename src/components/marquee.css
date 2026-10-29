@@ -30,6 +30,11 @@
   animation: flw-marquee-scroll var(--flw-marquee-dur, 12s) linear infinite;
 }
 
+/* Ticker feel: jumps at a low frame rate instead of gliding (JS sets the step count) */
+.flw-marquee--stepped .flw-marquee__track--anim {
+  animation-timing-function: steps(var(--flw-marquee-steps, 100));
+}
+
 @media (prefers-reduced-motion: reduce) {
   .flw-marquee__track--anim {
     animation: none;

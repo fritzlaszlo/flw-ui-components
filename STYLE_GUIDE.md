@@ -72,6 +72,15 @@ For data that represents real-world quantities on a scale (temperature, sky cond
 
 The principle: semantic data colors are always lighter and less saturated than the core status colors so the two registers never compete.
 
+### Playing with the palette
+
+The palette is small on purpose — that's what makes it fun to play. Status colors keep their meaning wherever state is shown; everywhere else, be generous:
+
+- **Identity colors.** Give peers a color each so they're recognizable at a glance: cpu green, mem blue, disk purple. Severity still wins — any bar above 70 % turns orange, above 90 % red, whatever its identity.
+- **Rotating accents.** Non-status values in a ticker can cycle through orange → purple → green so the strip feels alive. Labels stay gray; only the value gets the accent.
+- **Derive, don't invent.** Need a color for a domain (sky conditions, signal quality, room temperatures)? Lean on the data register or a lightened core color, or recolor a mono emoji (`filter: brightness(1.15) saturate(1.2)` is fair game). New hex values belong in project CSS, not in flw tokens.
+- **Gray carries a lot.** A muted bar (`--gray`) for something that's off, a dimmed row for stale data — gray and opacity say "not now" without saying "broken".
+
 ---
 
 ## Typography
@@ -80,10 +89,12 @@ The principle: semantic data colors are always lighter and less saturated than t
 
 | Token | Stack | Role |
 |---|---|---|
-| `--font-mono` | `'Space Mono', 'DejaVu Sans Mono', 'Courier New', monospace` | All UI text |
+| `--font-mono` | `'flw Glyphs', 'Space Mono', 'DejaVu Sans Mono', 'Courier New', monospace` | All UI text |
 | `--font-emoji` | `'Noto Emoji', sans-serif` | Pictographic/icon content |
 
 **Space Mono** (Google Fonts, weights 400 + 700) is the primary face. It is a fixed-width geometric grotesque with a clear, slightly wide letterform that reads well at small sizes on low-DPI screens. The fallback stack covers headless and offline deployments.
+
+**flw Glyphs** fills what Space Mono lacks: Space Mono covers Latin only, so box drawing, blocks, geometric shapes, arrows and Braille (`─ │ ┌ █ ▓ ▒ ░ ● ○ ■ ▶ ▼ ← → ⠋`) would otherwise fall back to whatever mono font the device has — Menlo on the Mac, DejaVu on the Pi, something else on Windows. flw ships DejaVu subsets (Sans Mono for shapes, Sans for Braille) under a `unicode-range`, so every glyph looks the same everywhere. Regenerate with `python3 scripts/fetch-glyphs.py` (needs `fonttools` + `brotli`).
 
 **Noto Emoji** provides supplementary pictographs. Bundled locally in `fonts/` (SIL OFL) — `@font-face` rules ship inside `flw.css`. No Google Fonts CDN required at runtime.
 
@@ -170,6 +181,8 @@ No `box-shadow` for elevation or depth. No drop shadows on cards or panels.
 - `.flw-grid` + `.flw-cols-2` / `.flw-cols-3` — place boxes on a grid
 - `.flw-cluster` — wrapping button/toggle groups
 - `.flw-stat-rows` / `.flw-stat-row` — key/value data rows
+- `.flw-data-grid` (+ `--4`) — rows whose columns line up: label · content · value (· status). `__num` right-aligns, `__full` spans the row
+- **Columns of stacks** — `.flw-grid.flw-cols-3` with one `.flw-stack` per column. Boxes of uneven height pack per column instead of leaving row gaps; the go-to layout for dashboards
 
 ### Component layout rules
 
@@ -177,7 +190,7 @@ No `box-shadow` for elevation or depth. No drop shadows on cards or panels.
 2. **One job per box.** Title names the job; content is only that concern.
 3. **Spacing only from the scale.** Use `--space-1`…`--space-4`.
 4. **Density default: compact.** 8px inside boxes; 12px between sections.
-5. **Rows before columns for data.** Grids place boxes, not every field.
+5. **Rows before columns for data.** Grids place boxes, not every field. When several rows share the same shape (metric · bar · value), use `.flw-data-grid` so the columns line up.
 6. **Controls in clusters.** No floating SaaS toolbars.
 7. **Hierarchy without size.** Weight and color before larger type.
 8. **Full-bleed page, inset content.** Only `.flw-page` provides outer padding.
@@ -200,7 +213,7 @@ The primary container. This is the core building block of the UI — directly in
 - Title bar: `.flw-box__title`, `.flw-box__title-text`, optional `.flw-box__title-extra`
 - Content area: `.flw-box__content`, `padding: 8px`
 - No background fill, no border-radius, no shadow
-- Title can include a glyph or mono-color emoji prefix for quick visual identification
+- Title icon: `.flw-box__icon` — one gray mono emoji in front of the title text, from the project's theme (see *Personality in practice*)
 
 ### Progress Bar (glyph-based) (`.flw-progress`)
 
@@ -209,7 +222,7 @@ Bars are rendered with block characters, not CSS widths. This preserves the term
 - Filled cell: `█`
 - Empty cell: `░`
 - Default width: 20 characters; narrower contexts: 12 characters
-- Color ramp: green (0–70%) → orange (70–90%) → red (>90%)
+- Color ramp: base color (0–70%) → orange (70–90%) → red (>90%). Base is green unless the bar has an identity color: `.flw-progress__bar--blue` / `--purple` / `--white` / `--gray`, or `data-flw-bar-color`
 - Label and value flanking the bar are right-aligned to a fixed `min-width: 4ch`
 - JS helper: `flw.bar(el, pct)` or `data-flw-bar`
 
@@ -218,6 +231,8 @@ Bars are rendered with block characters, not CSS widths. This preserves the term
 Inline state indicator.
 
 - Active / up: `●` in `var(--c-green)`
+- Warning: `●` in `var(--c-orange)` (`.flw-dot--warn`)
+- Asleep / parked: `💤` in `var(--c-purple)` (`.flw-dot--sleep`) — a laptop that's closed, a VM that's suspended. Not down, so not red
 - Inactive / down: `○` in `var(--c-red)`
 - Size: body font size; glow optional for "power LED" contexts (`.flw-led--on` / `.flw-led--off`)
 
@@ -259,7 +274,13 @@ tmux-style tab bar: inactive tabs are plain text; active tab gets an outline fra
 
 ### Marquee (`.flw-marquee`)
 
-Overflow text scroll. Linear animation; duration scales with content. JS: `data-flw-marquee`. Default: no border. Modifiers: `.flw-marquee--ruled` (bottom line), `.flw-marquee--box` (full frame).
+Overflow text scroll. Linear animation; duration scales with content. JS: `data-flw-marquee`. Default: no border. Modifiers: `.flw-marquee--ruled` (bottom line), `.flw-marquee--box` (full frame), `.flw-marquee--off` (dimmed, e.g. player stopped), `.flw-marquee--stepped` (ticker that jumps at 8 fps instead of gliding; `data-flw-marquee-fps` to tune).
+
+A marquee makes a good header ticker: build hash, clock, today's date, a trivia slot — separated by mono emoji from the project's icon pool instead of `·`.
+
+### Shade (`.flw-shade`)
+
+Intensity as texture: `░ ▒ ▓` fills the cell behind a bold white value. Thresholds 20 / 50 / 80 %. Default blue (rain chance); any text color class recolors the texture. JS: `data-flw-shade="65"` or `flw.shade(el, pct)`; CSS-only: `.flw-shade--1` … `--3`. Use for rain probability, signal strength, heatmap cells — anything where "how much" matters more than the exact number.
 
 ---
 
@@ -284,6 +305,8 @@ The icon system has three tiers, applied in order of preference:
 
 Moon phases often ramp dark → dim → blue → purple → white. Weather: green sun, blue rain, orange storm, purple moon.
 
+**Pictograms can carry status.** When the object has a natural pictogram, let the pictogram replace the `●` and take the status color: 🚌 green on time, orange delayed, red cancelled (plus `.flw-strike` on the time); 💤 purple for sleeping machines. The color keeps its meaning; the emoji adds what it is.
+
 **3. Full-color emoji (selective use)** — `.flw-emoji--color` only, no palette override. Standard emoji color intact — once or twice per project as personality anchor (🪴 irrigation, 🎙️ studio). Not throughout.
 
 The rule of thumb: terminal glyphs for function, mono emoji with palette highlights for supplementary iconography, full-color emoji for personality anchors.
@@ -300,6 +323,8 @@ The rule of thumb: terminal glyphs for function, mono emoji with palette highlig
 | Stale / disconnected | `opacity: 0.5` |
 | Dim / secondary | `opacity: 0.7` |
 | Active indicator | `var(--c-green)` + optional glow |
+| Asleep / parked | `var(--c-purple)` — 💤, not an error |
+| Cancelled | `var(--c-red)` + `.flw-strike` |
 | Warning | `var(--c-orange)` |
 | Error / down | `var(--c-red)` |
 
@@ -315,8 +340,29 @@ Motion is minimal and functional.
 |---|---|
 | Spinner | Frame swap every 80ms — no CSS transition |
 | Scrolling text (marquee) | `translateX` from 0 to `-50%`, linear, infinite; duration scales with text length |
+| Ticker (marquee `--stepped`) | Same path in `steps()` at ~8 fps — jumps a few pixels at a time, like an LED sign. Cheaper on a Pi, more terminal |
 
-No easing curves except linear. No entrance/exit animations. Motion only appears when it communicates something (activity, overflow text).
+`prefers-reduced-motion` stops spinner and marquee.
+
+No easing curves except linear (and `steps()`). No entrance/exit animations. Motion only appears when it communicates something (activity, overflow text).
+
+---
+
+## Personality in practice
+
+Lessons from the studio monitor (a 1280px kiosk on a Pi in the studio — the best flw-style UI so far). None of this is a class; it's how to use the classes.
+
+**Pick a world.** The studio is "gaolhouse" and its machines are rodents: the server is `ratte`, the Tailscale devices are *nager in freier wildnis*, cron jobs live in the *lokales hamsterrad*, the websites are a *spider web*. Box titles name the job in the project's world, not in IT words. The data inside stays plain — hostnames, times, percentages.
+
+**An icon pool, not an icon set.** Each box gets one gray mono emoji (`.flw-box__icon`) from a themed pool — 🐀 🌾 🦫 🐿️ 🧀 🪺 🕳️ 🪜. The same pool rotates as separators in the header ticker. Tier-2 mono, always gray: they decorate, they don't signal.
+
+**A trivia slot.** The ticker cycles real but useless facts between build hash and clock: the date in the 1900 Excel system, the Islamic and French Revolutionary calendars, days since the last full moon. Rule: trivia must be computed and true — never filler text.
+
+**Status through the domain.** Buses are 🚌 colored by punctuality, sleeping laptops are 💤 in purple, a cancelled departure is struck through in red. If the object has a picture, use it.
+
+**Display-only screens.** A kiosk nobody touches needs less: no hover states, hide the cursor after a few seconds of inactivity (project JS), pin the viewport (`<meta name="viewport" content="width=1280">`), lock overflow (`.flw-kiosk`), fit everything on one screen with columns of stacks and `.flw-truncate`. Show freshness instead of interactivity: dim stale data (`.flw-stale`), print its age (`12h`, `4d`), and keep a tiny connection dot in a corner.
+
+**Leave room for delight.** Between status views the monitor shows a gallery and a screensaver box that bounces like a DVD logo, with the hard purple offset shadow and a cycling `■ ■ ■` RGB test pattern. That's project code, not library — but it's the kind of thing flw UIs should have.
 
 ---
 
@@ -338,3 +384,5 @@ An ASCII map of the website, where each subpage/project has their own ASCII art 
 A minimalistic and clean interface for an artist portfolio but with pleanty of easter eggs and playful sorting algorithms.
 - https://of.domains/
 Playful ASCII approach followed by modern terminal style simple overview.
+- **studio monitor @ gaolhouse** (private, Pi kiosk)
+The reference flw-style UI: three columns of boxes, a rodent-themed world, a trivia ticker, pictograms as status. See *Personality in practice*.

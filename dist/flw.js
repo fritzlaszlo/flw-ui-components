@@ -15,10 +15,13 @@
       global.matchMedia('(prefers-reduced-motion: reduce)').matches
   }
 
-  function severityClass(pct) {
+  const BAR_COLORS = ['green', 'orange', 'red', 'blue', 'purple', 'white', 'gray']
+
+  // base color is identity (cpu green, mem blue …); severity overrides it
+  function severityClass(pct, base) {
     if (pct > 90) return 'flw-progress__bar--red'
     if (pct > 70) return 'flw-progress__bar--orange'
-    return 'flw-progress__bar--green'
+    return `flw-progress__bar--${base || 'green'}`
   }
 
   function glyphBar(pct, width) {
@@ -51,20 +54,30 @@
     cleanups.set(el, () => clearInterval(id))
   }
 
+  function shadeLevel(pct) {
+    if (pct >= 80) return 3
+    if (pct >= 50) return 2
+    if (pct >= 20) return 1
+    return 0
+  }
+
+  function shade(el, pct) {
+    el.classList.remove('flw-shade--1', 'flw-shade--2', 'flw-shade--3')
+    const level = shadeLevel(pct)
+    if (level) el.classList.add(`flw-shade--${level}`)
+  }
+
   function bar(el, pct, options) {
     const opts = options || {}
     const width = opts.width || Number(el.dataset.flwBarWidth) || 20
     const showValue = opts.showValue !== false
+    const color = opts.color || el.dataset.flwBarColor
     const clamped = Math.min(100, Math.max(0, pct))
 
     const barEl = el.querySelector('.flw-progress__bar') || el
     barEl.textContent = glyphBar(clamped, width)
-    barEl.classList.remove(
-      'flw-progress__bar--green',
-      'flw-progress__bar--orange',
-      'flw-progress__bar--red'
-    )
-    barEl.classList.add(severityClass(clamped))
+    barEl.classList.remove(...BAR_COLORS.map((c) => `flw-progress__bar--${c}`))
+    barEl.classList.add(severityClass(clamped, color))
 
     if (showValue) {
       const valueEl = el.querySelector('.flw-progress__value')
@@ -117,6 +130,7 @@
     const measure = () => {
       track.classList.remove('flw-marquee__track--anim')
       track.style.removeProperty('--flw-marquee-dur')
+      track.style.removeProperty('--flw-marquee-steps')
 
       // loop copy is hidden while not animating, so scrollWidth is one chunk
       const overflow = track.scrollWidth > el.clientWidth + 2
@@ -124,6 +138,10 @@
         const pxPerSec = 20
         const duration = Math.max(8, track.scrollWidth / pxPerSec)
         track.style.setProperty('--flw-marquee-dur', `${duration}s`)
+        if (el.classList.contains('flw-marquee--stepped')) {
+          const fps = Number(el.dataset.flwMarqueeFps) || 8
+          track.style.setProperty('--flw-marquee-steps', String(Math.round(duration * fps)))
+        }
         track.classList.add('flw-marquee__track--anim')
       }
     }
@@ -232,13 +250,17 @@
     scope.querySelectorAll('[data-flw-accordion]').forEach(accordion)
     scope.querySelectorAll('[data-flw-tabs]').forEach(tabs)
 
+    scope.querySelectorAll('[data-flw-shade]').forEach((el) => {
+      shade(el, Number(el.dataset.flwShade) || 0)
+    })
+
     scope.querySelectorAll('[data-flw-bar]').forEach((el) => {
       const pct = Number(el.dataset.flwBarValue || el.getAttribute('data-flw-bar-value') || 0)
       bar(el, pct)
     })
   }
 
-  const flw = { spinner, marquee, range, bar, accordion, tabs, auto, glyphBar, severityClass }
+  const flw = { spinner, marquee, range, bar, shade, shadeLevel, accordion, tabs, auto, glyphBar, severityClass }
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = flw

@@ -28,6 +28,17 @@
   content: '●';
 }
 
+/* Asleep / parked — not down, so purple instead of red */
+.flw-dot--sleep {
+  color: var(--c-purple);
+}
+
+.flw-dot--sleep::before {
+  content: '💤';
+  font-family: var(--font-emoji);
+  font-variant-emoji: text;
+}
+
 /* Power LED indicator */
 .flw-led {
   display: inline-block;

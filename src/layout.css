@@ -66,6 +66,32 @@
   }
 }
 
+/* Aligned rows: columns line up across every row (label · content · value) */
+.flw-data-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-1) 1ch;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.flw-data-grid--4 {
+  grid-template-columns: auto 1fr auto auto;
+}
+
+.flw-data-grid > * {
+  min-width: 0;
+}
+
+.flw-data-grid__num {
+  justify-self: end;
+}
+
+.flw-data-grid__full {
+  grid-column: 1 / -1;
+}
+
 /* Wrapping control groups */
 .flw-cluster {
   display: flex;

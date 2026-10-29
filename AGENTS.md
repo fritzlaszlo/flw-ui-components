@@ -34,8 +34,10 @@ Before inventing a new pattern, check [examples/overview.html](examples/overview
   └── .flw-page__header (optional title)
   └── .flw-grid / .flw-stack
         └── .flw-box (one job per box)
-              └── .flw-stat-rows / .flw-cluster / forms / progress
+              └── .flw-stat-rows / .flw-data-grid / .flw-cluster / forms / progress
 ```
+
+Dashboards and kiosks: **columns of stacks** — `.flw-grid.flw-cols-3`, one `.flw-stack` of boxes per column, so uneven boxes pack without row gaps.
 
 When a page grows beyond ~3 peer boxes, use `.flw-accordion` or `.flw-tabs` instead of endless scrolling stacks.
 
@@ -45,7 +47,7 @@ When a page grows beyond ~3 peer boxes, use `.flw-accordion` or `.flw-tabs` inst
 2. **One job per box.** Title names the job; content is only that concern.
 3. **Spacing only from the scale.** Use `--space-1`…`--space-4` or `.flw-gap-*` / `.flw-p-*`.
 4. **Density default: compact.** 8px inside boxes; 12px between sections.
-5. **Rows before columns for data.** Use `.flw-stat-row` for key/value. Grids place boxes, not every field.
+5. **Rows before columns for data.** Use `.flw-stat-row` for key/value, `.flw-data-grid` when several rows must line up (metric · bar · value). Grids place boxes, not every field.
 6. **Controls in clusters.** `.flw-cluster` or `.flw-stack` — no floating SaaS toolbars.
 7. **Hierarchy without size.** Bold + color before larger type. One hero reading max.
 8. **Full-bleed page, inset content.** Only `.flw-page` provides outer padding.
@@ -55,7 +57,12 @@ When a page grows beyond ~3 peer boxes, use `.flw-accordion` or `.flw-tabs` inst
 ## Do
 
 - Use `.flw-text-green` / `.flw-text-red` / `.flw-text-orange` for status
-- Use `.flw-dot--up` / `.flw-dot--down` for inline state
+- Use `.flw-dot--up` / `--warn` / `--sleep` / `--down` for inline state — sleeping/parked machines are purple 💤, not red
+- Give every box one gray mono emoji icon (`.flw-box__icon`) from a themed pool, and name boxes in the project's world (see STYLE_GUIDE → *Personality in practice*)
+- Give peer bars identity colors (`data-flw-bar-color="blue"`); severity overrides above 70 / 90 %
+- Use `.flw-shade` + `data-flw-shade` for "how much" values (rain chance, signal)
+- Let a domain pictogram carry status when there is one (🚌 green / orange / red, `.flw-strike` for cancelled)
+- Use `.flw-marquee--stepped` for header tickers
 - Use `.flw-btn--primary` for affirmative actions, `.flw-btn--danger` for destructive
 - Use `.flw-toggle` for on/off controls
 - Use `.flw-slider` for discrete choices with more than two options (levels, durations, modes)
@@ -68,6 +75,7 @@ When a page grows beyond ~3 peer boxes, use `.flw-accordion` or `.flw-tabs` inst
 ## Don't
 
 - No border-radius on containers (50% only for `.flw-led` and the `.flw-range` knob)
+- No new hex colors in flw tokens — derive from the palette / data register, keep domain colors in project CSS
 - No elevation shadows on panels (glow only on LEDs; hard purple offset for rare splash)
 - No gradients on backgrounds
 - No Inter/Roboto/system-ui as primary font

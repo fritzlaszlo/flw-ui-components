@@ -20,6 +20,12 @@
 .flw-progress__bar--orange { color: var(--c-orange); }
 .flw-progress__bar--red { color: var(--c-red); }
 
+/* Identity colors (cpu / mem / disk …) — severity still overrides above 70 / 90 % */
+.flw-progress__bar--blue { color: var(--c-blue); }
+.flw-progress__bar--purple { color: var(--c-purple); }
+.flw-progress__bar--white { color: var(--c-white); }
+.flw-progress__bar--gray { color: var(--c-gray); }
+
 .flw-progress__value {
   min-width: 4ch;
   text-align: right;

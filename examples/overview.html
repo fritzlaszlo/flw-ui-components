@@ -111,6 +111,11 @@
       </div>
 
       <div class="demo-block">
+        <div class="demo-label">glyphs (flw Glyphs — same on every device)</div>
+        <span class="flw-text-white">█ ▓ ▒ ░ ● ○ ■ □ ◆ ▶ ▼ ◀ ▲ ← → ─ │ ┌ ┐ └ ┘ ├ ┤ ━ ⠋ ⠙ ⠹ ⠸</span>
+      </div>
+
+      <div class="demo-block">
         <div class="demo-label">glow sample</div>
         <span class="flw-led flw-led--on"></span>
         <span class="flw-text-gray flw-sm"> rgba(var(--c-green-rgb), 0.45)</span>
@@ -234,6 +239,7 @@
         <span class="flw-dim">dim</span>
         <span class="flw-stale">stale</span>
         <span class="flw-bold">bold</span>
+        <span class="flw-strike flw-text-red">strike</span>
       </div>
       <hr class="flw-rule" />
       <div class="flw-row">
@@ -275,6 +281,32 @@
       </div>
 
       <div class="demo-block">
+        <div class="demo-label">flw-data-grid--4 — columns line up across rows</div>
+        <div class="flw-data-grid flw-data-grid--4" style="max-width:420px">
+          <span class="flw-text-white">dropbox</span><span class="flw-text-gray">täglich 02:00</span><span class="flw-data-grid__num flw-text-gray">12h</span><span class="flw-dot flw-dot--up"></span>
+          <span class="flw-text-white">backup</span><span class="flw-text-gray">monatlich</span><span class="flw-data-grid__num flw-text-gray">4d</span><span class="flw-dot flw-dot--up"></span>
+          <span class="flw-text-white">velsen</span><span class="flw-text-gray">minütlich</span><span class="flw-data-grid__num flw-text-gray">3min</span><span class="flw-dot flw-dot--warn"></span>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">columns of stacks — flw-grid + flw-stack per column, uneven boxes pack without gaps</div>
+        <div class="flw-grid flw-cols-3">
+          <div class="flw-stack">
+            <div class="flw-box"><div class="flw-box__title"><span class="flw-box__title-text">tall</span></div><div class="flw-box__content flw-text-gray">one<br />two<br />three</div></div>
+            <div class="flw-box"><div class="flw-box__title"><span class="flw-box__title-text">short</span></div><div class="flw-box__content flw-text-gray">one</div></div>
+          </div>
+          <div class="flw-stack">
+            <div class="flw-box"><div class="flw-box__title"><span class="flw-box__title-text">short</span></div><div class="flw-box__content flw-text-gray">one</div></div>
+            <div class="flw-box"><div class="flw-box__title"><span class="flw-box__title-text">tall</span></div><div class="flw-box__content flw-text-gray">one<br />two<br />three</div></div>
+          </div>
+          <div class="flw-stack">
+            <div class="flw-box"><div class="flw-box__title"><span class="flw-box__title-text">medium</span></div><div class="flw-box__content flw-text-gray">one<br />two</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
         <div class="demo-label">flw-cluster</div>
         <div class="flw-cluster">
           <button type="button" class="flw-btn">default</button>
@@ -292,11 +324,11 @@
 
       <div class="flw-grid flw-cols-2">
         <div class="flw-box">
-          <div class="flw-box__title"><span class="flw-box__title-text">box</span></div>
+          <div class="flw-box__title"><span class="flw-box__title-text"><span class="flw-box__icon">🐀</span>box</span></div>
           <div class="flw-box__content flw-text-gray">default resting border</div>
         </div>
         <div class="flw-box flw-box--active">
-          <div class="flw-box__title"><span class="flw-box__title-text">box --active</span></div>
+          <div class="flw-box__title"><span class="flw-box__title-text"><span class="flw-box__icon">🦫</span>box --active</span></div>
           <div class="flw-box__content flw-text-gray">elevated border</div>
         </div>
       </div>
@@ -316,11 +348,44 @@
       </div>
 
       <div class="demo-block">
+        <div class="demo-label">progress identity colors in a data grid — severity overrides above 70 / 90 %</div>
+        <div class="flw-data-grid" style="max-width:360px">
+          <span class="flw-text-gray">load</span>
+          <span class="flw-text-white">0.32  0.37  0.37</span>
+          <span class="flw-data-grid__num flw-text-green">38.9°</span>
+          <span class="flw-text-gray">cpu</span>
+          <span data-flw-bar data-flw-bar-value="24" data-flw-bar-color="green"><span class="flw-progress__bar"></span></span>
+          <span class="flw-data-grid__num flw-text-white">24%</span>
+          <span class="flw-text-gray">mem</span>
+          <span data-flw-bar data-flw-bar-value="45" data-flw-bar-color="blue"><span class="flw-progress__bar"></span></span>
+          <span class="flw-data-grid__num flw-text-white">45%</span>
+          <span class="flw-text-gray">disk</span>
+          <span data-flw-bar data-flw-bar-value="50" data-flw-bar-color="purple"><span class="flw-progress__bar"></span></span>
+          <span class="flw-data-grid__num flw-text-white">50%</span>
+          <span class="flw-text-gray">swap</span>
+          <span data-flw-bar data-flw-bar-value="93" data-flw-bar-color="blue"><span class="flw-progress__bar"></span></span>
+          <span class="flw-data-grid__num flw-text-white">93%</span>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">shade — intensity behind a value (data-flw-shade)</div>
+        <div class="flw-row flw-gap-3">
+          <span class="flw-shade" data-flw-shade="5"><span class="flw-shade__value">5%</span></span>
+          <span class="flw-shade" data-flw-shade="30"><span class="flw-shade__value">30%</span></span>
+          <span class="flw-shade" data-flw-shade="60"><span class="flw-shade__value">60%</span></span>
+          <span class="flw-shade" data-flw-shade="90"><span class="flw-shade__value">90%</span></span>
+          <span class="flw-shade flw-text-purple" data-flw-shade="60"><span class="flw-shade__value">-62dB</span></span>
+        </div>
+      </div>
+
+      <div class="demo-block">
         <div class="demo-label">status</div>
         <div class="flw-row flw-gap-3">
           <span><span class="flw-dot flw-dot--up"></span> up</span>
           <span><span class="flw-dot flw-dot--down"></span> down</span>
           <span><span class="flw-dot flw-dot--warn"></span> warn</span>
+          <span><span class="flw-dot flw-dot--sleep"></span> sleep</span>
           <span class="flw-led-row"><span class="flw-led flw-led--on"></span> on</span>
           <span class="flw-led-row"><span class="flw-led flw-led--off"></span> off</span>
         </div>
@@ -507,6 +572,31 @@
             <span class="flw-text-gray"> syncing…</span>
           </div>
         </div>
+
+        <div class="flw-box">
+          <div class="flw-box__title">
+            <span class="flw-box__title-text"><span class="flw-box__icon">🌾</span>nager in freier wildnis</span>
+            <span class="flw-box__title-extra flw-text-gray flw-sm">tailscale</span>
+          </div>
+          <div class="flw-box__content flw-stat-rows">
+            <div class="flw-stat-row"><span class="flw-stat-row__label flw-text-white">feldmaus</span><span class="flw-dot flw-dot--up"></span></div>
+            <div class="flw-stat-row"><span class="flw-stat-row__label flw-text-white">bisam-linux</span><span class="flw-dot flw-dot--sleep"></span></div>
+            <div class="flw-stat-row"><span class="flw-stat-row__label flw-text-white">capybara-hackintosh</span><span class="flw-dot flw-dot--sleep"></span></div>
+            <div class="flw-stat-row"><span class="flw-stat-row__label flw-text-white">former-ratte</span><span class="flw-dot flw-dot--down"></span></div>
+          </div>
+        </div>
+
+        <div class="flw-box">
+          <div class="flw-box__title">
+            <span class="flw-box__title-text"><span class="flw-box__icon">🗝</span>departures</span>
+          </div>
+          <div class="flw-box__content flw-stack flw-gap-1">
+            <span class="flw-text-gray flw-truncate">S Ostbahnhof via S+U Hauptbahnhof</span>
+            <div class="flw-row flw-gap-1"><span class="flw-emoji flw-emoji--green">🚌</span><span class="flw-text-white">123</span><span class="flw-flex-1 flw-min-w-0 flw-truncate flw-text-gray">S+U Hauptbahnhof</span><span class="flw-text-white">6m</span></div>
+            <div class="flw-row flw-gap-1"><span class="flw-emoji flw-emoji--orange">🚌</span><span class="flw-text-white">142</span><span class="flw-flex-1 flw-min-w-0 flw-truncate flw-text-gray">S Ostbahnhof via S+U Hauptbahnhof</span><span class="flw-text-white">14m</span></div>
+            <div class="flw-row flw-gap-1"><span class="flw-emoji flw-emoji--red">🚌</span><span class="flw-text-white">142</span><span class="flw-flex-1 flw-min-w-0 flw-truncate flw-text-gray">U Leopoldplatz via U Amrumer Str.</span><span class="flw-strike flw-text-red">16m</span></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -589,6 +679,26 @@
             <span class="flw-marquee__chunk flw-text-white" aria-hidden="true">
               now playing: ambient field recording from güterbahnhof
               <span class="flw-marquee__sep flw-dim"> · </span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">marquee --stepped (8 fps ticker, data-flw-marquee-fps)</div>
+        <div class="flw-marquee flw-marquee--stepped flw-marquee--ruled" data-flw-marquee style="max-width:320px">
+          <div class="flw-marquee__track">
+            <span class="flw-marquee__chunk">
+              <span class="flw-text-gray">build</span> <span class="flw-text-orange">5328fb5</span>
+              <span class="flw-emoji flw-emoji--dim"> ⛓ </span>
+              <span class="flw-text-gray">1900 excel date system</span> <span class="flw-text-purple">46324</span>
+              <span class="flw-emoji flw-emoji--dim"> 🕸 </span>
+            </span>
+            <span class="flw-marquee__chunk" aria-hidden="true">
+              <span class="flw-text-gray">build</span> <span class="flw-text-orange">5328fb5</span>
+              <span class="flw-emoji flw-emoji--dim"> ⛓ </span>
+              <span class="flw-text-gray">1900 excel date system</span> <span class="flw-text-purple">46324</span>
+              <span class="flw-emoji flw-emoji--dim"> 🕸 </span>
             </span>
           </div>
         </div>
