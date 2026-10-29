@@ -5,6 +5,8 @@ Personal DIY terminal-style CSS library for self-hosted projects (Pi kiosks, int
 Visual philosophy: [STYLE_GUIDE.md](STYLE_GUIDE.md)  
 Agent instructions: [AGENTS.md](AGENTS.md)
 
+**MCU displays (ESP32 / Arduino):** companion package [09-flw-UI-microcontroller-components](../09-flw-UI-microcontroller-components) — TFT preview lab, RGB565 tokens, Public Pixel charset.
+
 ## Install
 
 **First-time setup** (downloads SIL OFL fonts into `fonts/`):
