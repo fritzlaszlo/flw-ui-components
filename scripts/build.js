@@ -20,6 +20,8 @@ const cssFiles = [
   'components/box.css',
   'components/button.css',
   'components/form.css',
+  'components/slider.css',
+  'components/range.css',
   'components/progress.css',
   'components/status.css',
   'components/spinner.css',
@@ -49,7 +51,8 @@ if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir, { recursive: true })
 }
 
-const banner = `/* flw v0.1.0 — personal DIY terminal CSS library */\n`
+const { version } = require(path.join(root, 'package.json'))
+const banner = `/* flw v${version} — personal DIY terminal CSS library */\n`
 const css = cssFiles
   .map((file) => {
     const fullPath = path.join(srcDir, file)

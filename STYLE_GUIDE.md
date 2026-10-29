@@ -146,7 +146,7 @@ Avoid freeform spacing values. If a component needs a value not in this table, u
 - Strong accent: `6px solid var(--c-gray)` — only for intentional structural emphasis
 - Status outline: `1.5px solid` — fine-line status rings
 - **No border-radius** on containers and panels
-- `border-radius: 50%` on circular indicators only (LEDs, dots)
+- `border-radius: 50%` on circular indicators only (LEDs, dots) — and the `.flw-range` knob, which stands in for the `●` glyph of the slider track
 
 ---
 
@@ -239,9 +239,15 @@ A purple-tinted separator character (`/` or `│`) used inline between metadata 
 
 Outline buttons for control panels. Modifiers: `--primary`, `--danger`, `--active`.
 
-### Form controls (`.flw-input`, `.flw-select`, `.flw-toggle`)
+### Form controls (`.flw-input`, `.flw-select`, `.flw-toggle`, `.flw-slider`)
 
-Bordered monospace inputs. Select shows a `▼` affordance on the right. Toggle uses `[\00a0]` / `[x]` terminal checkbox style (non-breaking space prevents line breaks).
+Bordered monospace inputs. Select shows a `▼` affordance on the right.
+
+**Toggle** (binary on/off): a 12px framed cell in the box border language. Off = gray outline (resting, not red — off is not an error); on = green outline with a solid inner fill. Same weight as surrounding text.
+
+**Slider** (discrete choice with more than two options): a glyph track `──●──` built from a radio group. Track `─` in gray, selected knob `●` in white, hover previews `○`. The selected option's value is shown after the track. Use it for levels, durations, modes — not for binary state (that's the toggle). Works without JS; arrow keys move the knob.
+
+**Range** (`.flw-range`, continuous value): the full-resolution sibling of the slider — a native `<input type="range">` drawn as the same track: 1px gray line, white `●` knob with a black ring so the line breaks around it like the glyph. Use it when the value is a number on a scale (px offsets, gain, opacity) rather than a handful of named options. `step` sets the resolution; arrows move one step, shift + arrows ten. JS (`data-flw-range`) keeps the numeric readout in sync; without JS the control still works, the readout just stays static.
 
 ### Accordion (`.flw-accordion` / `.flw-details`)
 

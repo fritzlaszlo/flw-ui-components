@@ -49,6 +49,7 @@ Optional JS widgets use `data-flw-*` attributes:
 
 - `data-flw-spinner` — Braille spinner
 - `data-flw-marquee` — scrolling overflow text
+- `data-flw-range` — live readout for `.flw-range`, shift + arrows for ×10 steps
 - `data-flw-accordion="single|multi"` — collapsible panes
 - `data-flw-tabs` — tab panels
 - `data-flw-bar` + `data-flw-bar-value="42"` — glyph progress bar
@@ -71,7 +72,7 @@ npm run serve
 
 Open http://localhost:5173/overview — catalog of every token, utility, layout, and component.
 
-`serve` runs `build` first and copies `dist/` into `examples/dist/` so asset paths resolve when the examples folder is the server root.
+`serve` runs `build` first and copies `dist/` into `examples/dist/` so asset paths resolve when the examples folder is the server root. The server is `scripts/serve.js` — plain Node, no dependencies, works offline (`PORT=8080 npm run serve` for another port).
 
 Workflow: change CSS in `src/` → `npm run build` (or re-run `serve`) → refresh overview.
 

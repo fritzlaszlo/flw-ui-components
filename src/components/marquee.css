@@ -30,6 +30,16 @@
   animation: flw-marquee-scroll var(--flw-marquee-dur, 12s) linear infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .flw-marquee__track--anim {
+    animation: none;
+  }
+
+  .flw-marquee__chunk + .flw-marquee__chunk {
+    display: none;
+  }
+}
+
 @keyframes flw-marquee-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -37,6 +47,11 @@
 
 .flw-marquee__chunk {
   flex: 0 0 auto;
+}
+
+/* Loop copy only needed while scrolling */
+.flw-marquee__track:not(.flw-marquee__track--anim) > .flw-marquee__chunk + .flw-marquee__chunk {
+  display: none;
 }
 
 .flw-marquee__sep {

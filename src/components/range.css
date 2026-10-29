@@ -1,0 +1,92 @@
+/* Continuous slider — native range styled as the glyph track: ─────●───── */
+.flw-range {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  user-select: none;
+}
+
+.flw-range__label {
+  min-width: 8ch;
+  color: var(--c-gray);
+}
+
+.flw-range__input {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  min-width: 12ch;
+  height: calc(var(--font-size) * var(--line-height));
+  margin: 0;
+  background: transparent;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.flw-range__input:focus-visible {
+  outline: 1px solid var(--c-gray);
+  outline-offset: 2px;
+}
+
+.flw-range__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Track: 1px line in the same gray as ─ */
+.flw-range__input::-webkit-slider-runnable-track {
+  height: 1px;
+  background: var(--c-gray);
+}
+
+.flw-range__input::-moz-range-track {
+  height: 1px;
+  background: var(--c-gray);
+}
+
+/* Knob: ● with a background-colored ring so the line breaks around it like the glyph */
+.flw-range__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: calc(0.5em + 4px);
+  height: calc(0.5em + 4px);
+  margin-top: calc((1px - 0.5em - 4px) / 2);
+  border: 2px solid var(--c-bg);
+  border-radius: 50%;
+  background: var(--c-white);
+}
+
+.flw-range__input::-moz-range-thumb {
+  width: 0.5em;
+  height: 0.5em;
+  border: 2px solid var(--c-bg);
+  border-radius: 50%;
+  background: var(--c-white);
+}
+
+.flw-range__input:hover::-webkit-slider-runnable-track {
+  background: var(--c-white);
+}
+
+.flw-range__input:hover::-moz-range-track {
+  background: var(--c-white);
+}
+
+/* Fixed readout column so stacked ranges line up with or without a unit */
+.flw-range__readout {
+  display: inline-flex;
+  min-width: 8ch;
+  white-space: nowrap;
+}
+
+.flw-range__value {
+  min-width: 5ch;
+  text-align: right;
+  color: var(--c-white);
+}
+
+.flw-range__unit {
+  margin-left: var(--space-1);
+  color: var(--c-gray);
+}

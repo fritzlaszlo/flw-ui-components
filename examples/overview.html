@@ -236,7 +236,14 @@
         <span class="flw-bold">bold</span>
       </div>
       <hr class="flw-rule" />
-      <span class="flw-text-purple">meta</span><span class="flw-sep flw-sep--slash"></span><span class="flw-text-gray">value</span><span class="flw-sep flw-sep--dot"></span><span class="flw-text-gray">more</span>
+      <div class="flw-row">
+        <span class="flw-text-purple">meta</span><span class="flw-sep flw-sep--slash"></span><span class="flw-text-gray">value</span><span class="flw-sep flw-sep--dot"></span><span class="flw-text-gray">more</span><span class="flw-sep flw-sep--pipe"></span><span class="flw-text-gray">pipe</span>
+      </div>
+      <div class="demo-block">
+        <div class="demo-label">rule / rule --strong</div>
+        <hr class="flw-rule" />
+        <hr class="flw-rule flw-rule--strong" />
+      </div>
     </section>
 
     <hr class="flw-rule" />
@@ -313,6 +320,7 @@
         <div class="flw-row flw-gap-3">
           <span><span class="flw-dot flw-dot--up"></span> up</span>
           <span><span class="flw-dot flw-dot--down"></span> down</span>
+          <span><span class="flw-dot flw-dot--warn"></span> warn</span>
           <span class="flw-led-row"><span class="flw-led flw-led--on"></span> on</span>
           <span class="flw-led-row"><span class="flw-led flw-led--off"></span> off</span>
         </div>
@@ -320,10 +328,35 @@
 
       <div class="demo-block">
         <div class="demo-label">spinner</div>
-        <span class="flw-spinner" data-flw-spinner>
-          <span class="flw-spinner__char"></span>
-          <span class="flw-spinner__label">loading</span>
-        </span>
+        <div class="flw-row flw-gap-3">
+          <span class="flw-spinner" data-flw-spinner>
+            <span class="flw-spinner__char"></span>
+            <span class="flw-spinner__label">loading</span>
+          </span>
+          <span class="flw-spinner" data-flw-spinner>
+            <span class="flw-spinner__char flw-spinner__char--orange"></span>
+            <span class="flw-spinner__label">--orange</span>
+          </span>
+          <span class="flw-spinner" data-flw-spinner>
+            <span class="flw-spinner__char flw-spinner__char--blue"></span>
+            <span class="flw-spinner__label">--blue</span>
+          </span>
+          <span class="flw-spinner" data-flw-spinner>
+            <span class="flw-spinner__char flw-spinner__char--purple"></span>
+            <span class="flw-spinner__label">--purple</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">buttons</div>
+        <div class="flw-cluster">
+          <button type="button" class="flw-btn">default</button>
+          <button type="button" class="flw-btn flw-btn--primary">--primary</button>
+          <button type="button" class="flw-btn flw-btn--danger">--danger</button>
+          <button type="button" class="flw-btn flw-btn--active">--active</button>
+          <button type="button" class="flw-btn" disabled>disabled</button>
+        </div>
       </div>
 
       <div class="demo-block">
@@ -340,11 +373,93 @@
               <option>balcony-b</option>
             </select>
           </div>
+          <div class="flw-field">
+            <label class="flw-field__label" for="notes">notes</label>
+            <textarea class="flw-textarea" id="notes" rows="3" placeholder="drip line kinked near pot 3"></textarea>
+          </div>
           <label class="flw-toggle">
             <input class="flw-toggle__input" type="checkbox" checked />
             <span class="flw-toggle__switch"></span>
             <span class="flw-toggle__label">irrigation enabled</span>
           </label>
+          <label class="flw-toggle">
+            <input class="flw-toggle__input" type="checkbox" />
+            <span class="flw-toggle__switch"></span>
+            <span class="flw-toggle__label">frost guard</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">slider (&gt; 2 options — radio group)</div>
+        <div class="flw-stack">
+          <div class="flw-slider" role="radiogroup" aria-label="fan">
+            <span class="flw-slider__label">fan</span>
+            <label class="flw-slider__step">
+              <input class="flw-slider__input" type="radio" name="fan" value="off" />
+              <span class="flw-slider__knob"></span>
+              <span class="flw-slider__value">off</span>
+            </label>
+            <label class="flw-slider__step">
+              <input class="flw-slider__input" type="radio" name="fan" value="low" checked />
+              <span class="flw-slider__knob"></span>
+              <span class="flw-slider__value">low</span>
+            </label>
+            <label class="flw-slider__step">
+              <input class="flw-slider__input" type="radio" name="fan" value="high" />
+              <span class="flw-slider__knob"></span>
+              <span class="flw-slider__value">high</span>
+            </label>
+          </div>
+          <div class="flw-slider" role="radiogroup" aria-label="duration">
+            <span class="flw-slider__label">duration</span>
+            <label class="flw-slider__step">
+              <input class="flw-slider__input" type="radio" name="duration" value="5" />
+              <span class="flw-slider__knob"></span>
+              <span class="flw-slider__value">5 min</span>
+            </label>
+            <label class="flw-slider__step">
+              <input class="flw-slider__input" type="radio" name="duration" value="10" />
+              <span class="flw-slider__knob"></span>
+              <span class="flw-slider__value">10 min</span>
+            </label>
+            <label class="flw-slider__step">
+              <input class="flw-slider__input" type="radio" name="duration" value="15" checked />
+              <span class="flw-slider__knob"></span>
+              <span class="flw-slider__value">15 min</span>
+            </label>
+            <label class="flw-slider__step">
+              <input class="flw-slider__input" type="radio" name="duration" value="20" />
+              <span class="flw-slider__knob"></span>
+              <span class="flw-slider__value">20 min</span>
+            </label>
+            <label class="flw-slider__step">
+              <input class="flw-slider__input" type="radio" name="duration" value="30" />
+              <span class="flw-slider__knob"></span>
+              <span class="flw-slider__value">30 min</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">range (continuous — arrows ±1 step, shift + arrows ±10)</div>
+        <div class="flw-stack" style="max-width:480px">
+          <div class="flw-range" data-flw-range>
+            <label class="flw-range__label" for="offset">offset</label>
+            <input class="flw-range__input" id="offset" type="range" min="0" max="100" step="1" value="42" />
+            <span class="flw-range__readout"><output class="flw-range__value" for="offset">42</output><span class="flw-range__unit">px</span></span>
+          </div>
+          <div class="flw-range" data-flw-range>
+            <label class="flw-range__label" for="gamma">gamma</label>
+            <input class="flw-range__input" id="gamma" type="range" min="0" max="2" step="0.01" value="1.2" />
+            <span class="flw-range__readout"><output class="flw-range__value" for="gamma">1.20</output></span>
+          </div>
+          <div class="flw-range" data-flw-range>
+            <label class="flw-range__label" for="locked">locked</label>
+            <input class="flw-range__input" id="locked" type="range" min="0" max="100" value="70" disabled />
+            <span class="flw-range__readout"><output class="flw-range__value" for="locked">70</output><span class="flw-range__unit">%</span></span>
+          </div>
         </div>
       </div>
     </section>
@@ -480,7 +595,7 @@
       </div>
 
       <div class="demo-block">
-        <div class="demo-label">marquee --ruled / --box</div>
+        <div class="demo-label">marquee --ruled / --box / --off</div>
         <div class="flw-stack" style="max-width:320px">
           <div class="flw-marquee flw-marquee--ruled" data-flw-marquee>
             <div class="flw-marquee__track">
@@ -492,6 +607,12 @@
             <div class="flw-marquee__track">
               <span class="flw-marquee__chunk flw-text-white">boxed marquee frame</span>
               <span class="flw-marquee__chunk flw-text-white" aria-hidden="true">boxed marquee frame</span>
+            </div>
+          </div>
+          <div class="flw-marquee flw-marquee--box flw-marquee--off" data-flw-marquee>
+            <div class="flw-marquee__track">
+              <span class="flw-marquee__chunk flw-text-white">--off · player stopped</span>
+              <span class="flw-marquee__chunk flw-text-white" aria-hidden="true">--off · player stopped</span>
             </div>
           </div>
         </div>

@@ -10,6 +10,11 @@
 
   const cleanups = new WeakMap()
 
+  function reducedMotion() {
+    return typeof global.matchMedia === 'function' &&
+      global.matchMedia('(prefers-reduced-motion: reduce)').matches
+  }
+
   function severityClass(pct) {
     if (pct > 90) return 'flw-progress__bar--red'
     if (pct > 70) return 'flw-progress__bar--orange'
@@ -32,13 +37,12 @@
 
   function spinner(el) {
     cleanup(el)
-    const charEl = el.matches('[data-flw-spinner]')
-      ? el
-      : el.querySelector('.flw-spinner__char')
-    if (!charEl) return
+    const charEl = el.querySelector('.flw-spinner__char') || el
 
     let index = 0
     charEl.textContent = SPINNER_FRAMES[0]
+    if (reducedMotion()) return
+
     const id = setInterval(() => {
       index = (index + 1) % SPINNER_FRAMES.length
       charEl.textContent = SPINNER_FRAMES[index]
@@ -68,6 +72,43 @@
     }
   }
 
+  function range(el) {
+    cleanup(el)
+    const input = el.querySelector('.flw-range__input')
+    if (!input) return
+    const valueEl = el.querySelector('.flw-range__value')
+
+    const stepAttr = input.getAttribute('step') || '1'
+    const min = Number(input.min || 0)
+    const max = Number(input.max || 100)
+    const step = stepAttr === 'any' ? (max - min) / 100 : Number(stepAttr)
+    const decimals = stepAttr === 'any' ? 2 : (stepAttr.split('.')[1] || '').length
+
+    const update = () => {
+      if (valueEl) valueEl.textContent = Number(input.value).toFixed(decimals)
+    }
+
+    // arrows move one step (native); shift + arrows move ten
+    const onKey = (event) => {
+      const dir = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[event.key]
+      if (!event.shiftKey || !dir) return
+      event.preventDefault()
+      const next = Number(input.value) + dir * step * 10
+      input.value = String(Math.min(max, Math.max(min, next)))
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      input.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+
+    update()
+    input.addEventListener('input', update)
+    input.addEventListener('keydown', onKey)
+
+    cleanups.set(el, () => {
+      input.removeEventListener('input', update)
+      input.removeEventListener('keydown', onKey)
+    })
+  }
+
   function marquee(el) {
     cleanup(el)
     const track = el.querySelector('.flw-marquee__track')
@@ -77,9 +118,10 @@
       track.classList.remove('flw-marquee__track--anim')
       track.style.removeProperty('--flw-marquee-dur')
 
+      // loop copy is hidden while not animating, so scrollWidth is one chunk
       const overflow = track.scrollWidth > el.clientWidth + 2
-      if (overflow) {
-        const pxPerSec = 40
+      if (overflow && !reducedMotion()) {
+        const pxPerSec = 20
         const duration = Math.max(8, track.scrollWidth / pxPerSec)
         track.style.setProperty('--flw-marquee-dur', `${duration}s`)
         track.classList.add('flw-marquee__track--anim')
@@ -186,6 +228,7 @@
 
     scope.querySelectorAll('[data-flw-spinner]').forEach(spinner)
     scope.querySelectorAll('[data-flw-marquee]').forEach(marquee)
+    scope.querySelectorAll('[data-flw-range]').forEach(range)
     scope.querySelectorAll('[data-flw-accordion]').forEach(accordion)
     scope.querySelectorAll('[data-flw-tabs]').forEach(tabs)
 
@@ -195,7 +238,7 @@
     })
   }
 
-  const flw = { spinner, marquee, bar, accordion, tabs, auto, glyphBar, severityClass }
+  const flw = { spinner, marquee, range, bar, accordion, tabs, auto, glyphBar, severityClass }
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = flw

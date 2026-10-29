@@ -58,6 +58,8 @@ When a page grows beyond ~3 peer boxes, use `.flw-accordion` or `.flw-tabs` inst
 - Use `.flw-dot--up` / `.flw-dot--down` for inline state
 - Use `.flw-btn--primary` for affirmative actions, `.flw-btn--danger` for destructive
 - Use `.flw-toggle` for on/off controls
+- Use `.flw-slider` for discrete choices with more than two options (levels, durations, modes)
+- Use `.flw-range` + `data-flw-range` for continuous numeric values (0–100 px, gain, opacity)
 - Use terminal glyphs first: `█ ░ ● ○ ▶ ▼`
 - Use `.flw-sep` between metadata tokens
 - Use `.flw-stale` / `.flw-dim` for degraded/secondary content
@@ -65,7 +67,7 @@ When a page grows beyond ~3 peer boxes, use `.flw-accordion` or `.flw-tabs` inst
 
 ## Don't
 
-- No border-radius on containers (50% only for `.flw-led`)
+- No border-radius on containers (50% only for `.flw-led` and the `.flw-range` knob)
 - No elevation shadows on panels (glow only on LEDs; hard purple offset for rare splash)
 - No gradients on backgrounds
 - No Inter/Roboto/system-ui as primary font
@@ -125,6 +127,33 @@ Use `.flw-prose` inside boxes for notes, logs, or short explanations. Stay at ba
   <span class="flw-toggle__switch"></span>
   <span class="flw-toggle__label">zone-a</span>
 </label>
+
+<!-- > 2 options: one .flw-slider__step per option, shared radio name -->
+<div class="flw-slider" role="radiogroup" aria-label="fan">
+  <span class="flw-slider__label">fan</span>
+  <label class="flw-slider__step">
+    <input class="flw-slider__input" type="radio" name="fan" value="off" />
+    <span class="flw-slider__knob"></span>
+    <span class="flw-slider__value">off</span>
+  </label>
+  <label class="flw-slider__step">
+    <input class="flw-slider__input" type="radio" name="fan" value="low" checked />
+    <span class="flw-slider__knob"></span>
+    <span class="flw-slider__value">low</span>
+  </label>
+  <label class="flw-slider__step">
+    <input class="flw-slider__input" type="radio" name="fan" value="high" />
+    <span class="flw-slider__knob"></span>
+    <span class="flw-slider__value">high</span>
+  </label>
+</div>
+
+<!-- continuous value: step sets resolution, readout synced by flw.js -->
+<div class="flw-range" data-flw-range>
+  <label class="flw-range__label" for="offset">offset</label>
+  <input class="flw-range__input" id="offset" type="range" min="0" max="100" step="1" value="42" />
+  <span class="flw-range__readout"><output class="flw-range__value" for="offset">42</output><span class="flw-range__unit">px</span></span>
+</div>
 
 <div class="flw-field">
   <label class="flw-field__label" for="x">label</label>

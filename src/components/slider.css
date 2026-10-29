@@ -1,0 +1,67 @@
+/* Glyph slider — discrete choice (> 2 options) as a radio group: ──●── */
+.flw-slider {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+
+.flw-slider__label {
+  min-width: 8ch;
+  color: var(--c-gray);
+  margin-right: var(--space-2);
+}
+
+/* Steps dissolve so knobs line up as one track and values collect at the end */
+.flw-slider__step {
+  display: contents;
+}
+
+.flw-slider__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.flw-slider__knob {
+  width: 1ch;
+  text-align: center;
+  color: var(--c-gray);
+  cursor: pointer;
+}
+
+.flw-slider__knob::before {
+  content: '─';
+}
+
+.flw-slider__knob:hover {
+  color: var(--c-white);
+}
+
+.flw-slider__knob:hover::before {
+  content: '○';
+}
+
+.flw-slider__input:checked + .flw-slider__knob {
+  color: var(--c-white);
+}
+
+.flw-slider__input:checked + .flw-slider__knob::before {
+  content: '●';
+}
+
+.flw-slider__input:focus-visible + .flw-slider__knob {
+  outline: 1px solid var(--c-gray);
+  outline-offset: 2px;
+}
+
+.flw-slider__value {
+  display: none;
+  order: 1;
+  margin-left: var(--space-2);
+  color: var(--c-white);
+}
+
+.flw-slider__input:checked ~ .flw-slider__value {
+  display: inline;
+}

@@ -24,6 +24,7 @@
 
 /* Typography helpers */
 .flw-mono { font-family: var(--font-mono); }
+.flw-bold { font-weight: 700; }
 
 /* Flex / gap / padding utilities */
 .flw-sm { font-size: var(--font-size-sm); }
