@@ -70,6 +70,9 @@ When a page grows beyond ~3 peer boxes, use `.flw-accordion` or `.flw-tabs` inst
 - Use `.flw-slider` for discrete choices with more than two options (levels, durations, modes)
 - Use `.flw-range` + `data-flw-range` for continuous numeric values (0–100 px, gain, opacity)
 - Use `.flw-choice` for one of a few options *without* order (wave, blend mode, tool) — slider implies order
+- Use `.flw-tree` (nested `<ul>`, `<details>` for collapsible branches) for scene graphs, layers, preset banks
+- Use `.flw-spark` / `.flw-meter` (`data-flw-spark`, `data-flw-meter`, or `flw.spark` / `flw.meter` live) for history and levels
+- Use `flw.toast(msg, { status })` for feedback; `<dialog class="flw-dialog">` + `data-flw-open` only for irreversible confirms or input
 - Use `.flw-scrub` + `data-flw-scrub` (`type="text" inputmode="decimal"`) for numbers in dense parameter panels
 - Use terminal glyphs first: `█ ░ ● ○ ▶ ▼`
 - Use `.flw-sep` between metadata tokens
@@ -173,6 +176,32 @@ Use `.flw-prose` inside boxes for notes, logs, or short explanations. Stay at ba
   <input class="flw-scrub__input" type="text" inputmode="decimal" min="20" max="2000" step="1" value="220" />
   <span class="flw-scrub__unit">Hz</span>
 </label>
+
+<!-- tree: leaves are rows, branches are details -->
+<ul class="flw-tree">
+  <li>
+    <details open>
+      <summary class="flw-tree__row"><span class="flw-tree__label">scene</span><span class="flw-tree__meta">group</span></summary>
+      <ul>
+        <li><span class="flw-tree__row flw-tree__row--active"><span class="flw-tree__label">camera</span></span></li>
+        <li><span class="flw-tree__row"><span class="flw-tree__label">light</span></span></li>
+      </ul>
+    </details>
+  </li>
+</ul>
+
+<!-- dialog: never add .flw-box to the <dialog> itself (it would stay visible when closed) -->
+<button type="button" class="flw-btn" data-flw-open="#save">save as…</button>
+<dialog class="flw-dialog" id="save">
+  <form method="dialog">
+    <div class="flw-box__title"><span class="flw-box__title-text">save as</span></div>
+    <div class="flw-box__content">…</div>
+    <div class="flw-dialog__actions">
+      <button class="flw-btn" value="cancel">cancel</button>
+      <button class="flw-btn flw-btn--primary" value="save">save</button>
+    </div>
+  </form>
+</dialog>
 
 <!-- continuous value: step sets resolution, readout synced by flw.js -->
 <div class="flw-range" data-flw-range>

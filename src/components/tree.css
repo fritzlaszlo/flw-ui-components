@@ -1,0 +1,105 @@
+/* Tree — scene graph, layers, file system: nested lists with ├─ └─ │ connectors.
+   Connectors are 1px lines (not glyphs) so they stay unbroken at any line height.
+   Branches can be <details> for native collapse with ▶ / ▼. */
+.flw-tree,
+.flw-tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.flw-tree ul {
+  margin-left: 0.5ch;
+}
+
+.flw-tree ul > li {
+  position: relative;
+  padding-left: 2ch;
+}
+
+/* │ — runs through the whole item, so it passes its children */
+.flw-tree ul > li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-left: 1px solid var(--c-dark-gray);
+}
+
+/* └ — the last child stops at its own row */
+.flw-tree ul > li:last-child::before {
+  bottom: auto;
+  height: calc(var(--line-height) * 0.5em);
+}
+
+/* ─ */
+.flw-tree ul > li::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--line-height) * 0.5em);
+  left: 0;
+  width: 1.5ch;
+  border-top: 1px solid var(--c-dark-gray);
+}
+
+.flw-tree__row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  min-width: 0;
+  color: var(--c-gray);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.flw-tree__row:hover {
+  color: var(--c-white);
+}
+
+.flw-tree__row--active {
+  color: var(--c-white);
+  font-weight: 700;
+}
+
+.flw-tree__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flw-tree__meta {
+  margin-left: auto;
+  padding-left: var(--space-2);
+  color: var(--c-gray);
+  opacity: 0.7;
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+}
+
+/* Collapsible branch */
+.flw-tree summary.flw-tree__row {
+  list-style: none;
+  cursor: pointer;
+}
+
+.flw-tree summary.flw-tree__row::-webkit-details-marker {
+  display: none;
+}
+
+.flw-tree summary.flw-tree__row::before {
+  content: '▶';
+  width: 1ch;
+  flex-shrink: 0;
+  color: var(--c-gray);
+  font-weight: 400;
+}
+
+.flw-tree details[open] > summary.flw-tree__row::before {
+  content: '▼';
+}
+
+.flw-tree summary.flw-tree__row:focus-visible {
+  outline: 1px solid var(--c-gray);
+  outline-offset: 1px;
+}

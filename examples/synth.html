@@ -5,10 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>drone-o-mat · flw app shell</title>
   <link rel="stylesheet" href="dist/flw.css" />
-  <style>
-    .patch { cursor: pointer; }
-    .patch:hover .flw-stat-row__label { color: var(--c-white); }
-  </style>
 </head>
 <body>
   <div class="flw-app">
@@ -24,19 +20,44 @@
         <span class="flw-scrub__label">bpm</span>
         <input class="flw-scrub__input" type="text" inputmode="decimal" min="40" max="240" step="1" value="92" style="--flw-scrub-width: 4ch" />
       </label>
+      <button type="button" class="flw-btn" data-flw-open="#save-dialog">save as…</button>
       <button type="button" class="flw-btn flw-btn--primary" id="play">▶ play</button>
-      <button type="button" class="flw-btn flw-btn--danger">panic</button>
+      <button type="button" class="flw-btn flw-btn--danger" id="panic">panic</button>
     </header>
 
     <aside class="flw-app__side">
       <div class="flw-box">
         <div class="flw-box__title"><span class="flw-box__title-text"><span class="flw-box__icon">🐚</span>patches</span></div>
-        <div class="flw-box__content flw-stat-rows">
-          <div class="flw-stat-row patch"><span class="flw-stat-row__label flw-text-white">güterbahnhof</span><span class="flw-dot flw-dot--up"></span></div>
-          <div class="flw-stat-row patch"><span class="flw-stat-row__label">kellerbrummen</span></div>
-          <div class="flw-stat-row patch"><span class="flw-stat-row__label">hamsterrad 3am</span></div>
-          <div class="flw-stat-row patch"><span class="flw-stat-row__label">nebelhorn</span></div>
-          <div class="flw-stat-row patch"><span class="flw-stat-row__label">ratten-choir</span></div>
+        <div class="flw-box__content">
+          <ul class="flw-tree">
+            <li>
+              <details open>
+                <summary class="flw-tree__row"><span class="flw-tree__label">factory</span><span class="flw-tree__meta">2</span></summary>
+                <ul>
+                  <li><span class="flw-tree__row flw-tree__row--active"><span class="flw-tree__label">güterbahnhof</span></span></li>
+                  <li><span class="flw-tree__row"><span class="flw-tree__label">kellerbrummen</span></span></li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details open>
+                <summary class="flw-tree__row"><span class="flw-tree__label">user</span><span class="flw-tree__meta">3</span></summary>
+                <ul>
+                  <li><span class="flw-tree__row"><span class="flw-tree__label">hamsterrad 3am</span></span></li>
+                  <li>
+                    <details>
+                      <summary class="flw-tree__row"><span class="flw-tree__label">nebelhorn</span><span class="flw-tree__meta">2 var</span></summary>
+                      <ul>
+                        <li><span class="flw-tree__row"><span class="flw-tree__label">dry</span></span></li>
+                        <li><span class="flw-tree__row"><span class="flw-tree__label">wet</span></span></li>
+                      </ul>
+                    </details>
+                  </li>
+                  <li><span class="flw-tree__row"><span class="flw-tree__label">ratten-choir</span></span></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="flw-box">
@@ -46,6 +67,20 @@
           <span class="flw-text-gray">v2</span><span data-flw-bar data-flw-bar-value="38" data-flw-bar-width="12" data-flw-bar-color="purple"><span class="flw-progress__bar"></span></span><span class="flw-data-grid__num">38%</span>
           <span class="flw-text-gray">v3</span><span data-flw-bar data-flw-bar-value="12" data-flw-bar-width="12" data-flw-bar-color="purple"><span class="flw-progress__bar"></span></span><span class="flw-data-grid__num">12%</span>
           <span class="flw-text-gray">out</span><span data-flw-bar data-flw-bar-value="78" data-flw-bar-width="12" data-flw-bar-color="green"><span class="flw-progress__bar"></span></span><span class="flw-data-grid__num">78%</span>
+          <span class="flw-text-gray">cpu</span><span class="flw-spark flw-text-blue" id="cpu-spark"></span><span class="flw-data-grid__num" id="cpu-num">—</span>
+        </div>
+      </div>
+      <div class="flw-box">
+        <div class="flw-box__title"><span class="flw-box__title-text"><span class="flw-box__icon">🕊</span>master</span><span class="flw-box__title-extra flw-text-gray flw-sm">L R</span></div>
+        <div class="flw-box__content flw-row flw-gap-3" style="align-items:flex-end">
+          <div class="flw-meters">
+            <span class="flw-meter" id="meter-l" data-flw-meter="0" data-flw-meter-height="10" data-flw-meter-width="2"></span>
+            <span class="flw-meter" id="meter-r" data-flw-meter="0" data-flw-meter-height="10" data-flw-meter-width="2"></span>
+          </div>
+          <div class="flw-stat-rows flw-flex-1">
+            <div class="flw-stat-row"><span class="flw-stat-row__label">peak</span><span class="flw-text-white" id="peak">-∞ dB</span></div>
+            <div class="flw-stat-row"><span class="flw-stat-row__label">clip</span><span class="flw-text-gray" id="clips">0</span></div>
+          </div>
         </div>
       </div>
     </aside>
@@ -155,6 +190,27 @@
     </footer>
   </div>
 
+  <dialog class="flw-dialog" id="save-dialog">
+    <form method="dialog">
+      <div class="flw-box__title"><span class="flw-box__title-text"><span class="flw-box__icon">🐚</span>save patch as</span></div>
+      <div class="flw-box__content flw-stack">
+        <div class="flw-field">
+          <label class="flw-field__label" for="patch-name">name</label>
+          <input class="flw-input" id="patch-name" type="text" value="güterbahnhof 2" />
+        </div>
+        <div class="flw-choice" role="radiogroup" aria-label="bank">
+          <span class="flw-choice__label">bank</span>
+          <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="bank" value="user" checked /><span class="flw-choice__text">user</span></label>
+          <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="bank" value="factory" /><span class="flw-choice__text">factory</span></label>
+        </div>
+      </div>
+      <div class="flw-dialog__actions">
+        <button class="flw-btn" value="cancel">cancel</button>
+        <button class="flw-btn flw-btn--primary" value="save">save</button>
+      </div>
+    </form>
+  </dialog>
+
   <script src="dist/flw.js"></script>
   <script>
     flw.auto()
@@ -254,12 +310,45 @@
     document.addEventListener('input', draw)
     if (!still) requestAnimationFrame(loop)
 
+    let playing = false
+    let clips = 0
+    const cpu = Array(16).fill(4)
+
     $('play').addEventListener('click', () => {
-      const on = $('status-text').textContent === 'idle'
-      $('status-text').textContent = on ? 'playing' : 'idle'
-      $('play').textContent = on ? '■ stop' : '▶ play'
-      $('play').classList.toggle('flw-btn--active', on)
+      playing = !playing
+      $('status-text').textContent = playing ? 'playing' : 'idle'
+      $('play').textContent = playing ? '■ stop' : '▶ play'
+      $('play').classList.toggle('flw-btn--active', playing)
+      flw.toast(playing ? 'transport started · 92 bpm' : 'transport stopped', { status: 'info' })
     })
+
+    $('panic').addEventListener('click', () => {
+      flw.toast('all notes off · 3 voices released', { status: 'warn' })
+    })
+
+    $('save-dialog').addEventListener('close', () => {
+      if ($('save-dialog').returnValue !== 'save') return
+      const bank = document.querySelector('input[name=bank]:checked').value
+      flw.toast(`patch saved · ${bank} / ${$('patch-name').value}`)
+    })
+
+    // fake levels and cpu while playing
+    setInterval(() => {
+      const gain = Number($('gain').value)
+      const level = (base) => (playing ? Math.min(100, base * gain + Math.random() * 18) : 0)
+      const l = level(92)
+      const r = level(86)
+      flw.meter($('meter-l'), l)
+      flw.meter($('meter-r'), r)
+      const peak = Math.max(l, r)
+      if (peak > 99) $('clips').textContent = String(++clips)
+      $('peak').textContent = peak ? `${(20 * Math.log10(peak / 100)).toFixed(1)} dB` : '-∞ dB'
+
+      cpu.shift()
+      cpu.push(playing ? 18 + Math.random() * 30 : 3 + Math.random() * 3)
+      flw.spark($('cpu-spark'), cpu, { min: 0, max: 100 })
+      $('cpu-num').textContent = `${Math.round(cpu[cpu.length - 1])}%`
+    }, still ? 1000 : 120)
   </script>
 </body>
 </html>

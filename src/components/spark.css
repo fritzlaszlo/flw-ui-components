@@ -1,0 +1,29 @@
+/* Sparkline — history in one line of ▁▂▃▄▅▆▇█ (fps, cpu, envelope) */
+.flw-spark {
+  display: inline-block;
+  color: var(--c-green);
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: pre;
+  vertical-align: baseline;
+}
+
+/* Meter — vertical level in █ / ░ cells, filled from the bottom (audio, tank, queue) */
+.flw-meter {
+  display: inline-flex;
+  flex-direction: column;
+  color: var(--c-dark-gray);
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: pre;
+}
+
+.flw-meter__cell--on { color: var(--c-green); }
+.flw-meter__cell--warn { color: var(--c-orange); }
+.flw-meter__cell--peak { color: var(--c-red); }
+
+.flw-meters {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1px;
+}

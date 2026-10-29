@@ -285,6 +285,24 @@ Overflow text scroll. Linear animation; duration scales with content. JS: `data-
 
 A marquee makes a good header ticker: build hash, clock, today's date, a trivia slot — separated by mono emoji from the project's icon pool instead of `·`.
 
+### Tree (`.flw-tree`)
+
+Scene graphs, layer stacks, file systems, preset banks: nested `<ul>` with `├─ └─ │` connectors. The connectors are drawn as 1px dark-gray lines rather than glyphs so they never break between rows. A branch can be a `<details>`: `▶` / `▼` in front of its label, native collapse, no JS. Rows are gray, hover white, the selected one `.flw-tree__row--active` (white, bold). `.flw-tree__meta` pushes a type or count to the right.
+
+### Sparkline & Meter (`.flw-spark`, `.flw-meter`)
+
+**Sparkline** — a history in one line of `▁▂▃▄▅▆▇█`: fps, cpu, an envelope. Green by default, any text color class recolors. `data-flw-spark="58 60 41 22 …"` (+ `-min` / `-max` to pin the scale) or `flw.spark(el, values)` for live data.
+
+**Meter** — a vertical level in `█ / ░` cells, filled from the bottom: audio out, a tank, a queue. Cells above 70 % are orange, above 90 % red — the same ramp as the progress bar, painted by height. `data-flw-meter="78"` (+ `-height`, `-width` in cells) or `flw.meter(el, pct)`. Group channels in `.flw-meters`.
+
+### Dialog (`.flw-dialog`)
+
+Native `<dialog>` styled as a box: gray frame, the hard purple offset shadow (this is the rare splash the shadow rules allow), backdrop at 70 % black. Inside, reuse `.flw-box__title` / `.flw-box__content` and end with `.flw-dialog__actions`. Opens instantly — no fade. `data-flw-open="#id"` on a button calls `showModal()`; Esc and `<form method="dialog">` buttons close it natively, the button's `value` lands in `returnValue`. `.flw-dialog--danger` frames destructive confirmations in red. Use dialogs rarely: confirm what can't be undone, ask for a name — not for information.
+
+### Toast (`flw.toast`)
+
+Feedback as log lines, not colored cards: `15:28:37 ● export done · ratte.glb 2.4 MB`. Time in gray, a status mark (`ok` green, `info` blue, `warn` orange, `error` red `○` with a red frame), the message in white. Lines stack in the bottom-right corner (above the status bar inside `.flw-app`), vanish after 4 s or on click, at most five; `timeout: 0` keeps errors until clicked. No slide-in.
+
 ### Shade (`.flw-shade`)
 
 Intensity as texture: `░ ▒ ▓` fills the cell behind a bold white value. Thresholds 20 / 50 / 80 %. Default blue (rain chance); any text color class recolors the texture. JS: `data-flw-shade="65"` or `flw.shade(el, pct)`; CSS-only: `.flw-shade--1` … `--3`. Use for rain probability, signal strength, heatmap cells — anything where "how much" matters more than the exact number.
@@ -369,11 +387,15 @@ Dashboards are read; tools are worked. When flw drives a generator, a synth or a
 | a number in a dense panel | `.flw-scrub` |
 | a number that deserves room (cutoff, master, timeline) | `.flw-range` |
 
-**Tool layout.** `.flw-app` shell: toolbar with title and transport (`▶ play` primary, `panic` danger), library or tree on the side, the work surface in the middle as a flush box with a HUD, parameters in the inspector as one box per module (osc, filter, envelope). The status bar is the log line: state dot, sample rate, hints.
+**Tool layout.** `.flw-app` shell: toolbar with title and transport (`▶ play` primary, `panic` danger), a `.flw-tree` of presets / scene nodes on the side, the work surface in the middle as a flush box with a HUD, parameters in the inspector as one box per module (osc, filter, envelope). The status bar is the log line: state dot, sample rate, hints.
 
 **Focus is information.** In a kiosk nothing has focus; in a tool, the field that owns the keyboard must always be visible. Keep `:focus-visible` outlines, mark the active surface with `.flw-box--active`, show dragging in green.
 
 **Hints live in the status bar,** not in tooltips: "drag numbers sideways · shift ×10 · click to type".
+
+**Feedback is a log.** Every action that isn't visible on its own gets a toast line ("patch saved · user / güterbahnhof 2", "all notes off"). Only irreversible things get a dialog.
+
+**Live numbers move as glyphs.** cpu as a sparkline, output as meters, voices as bars — the instrument shows its own state without a chart library.
 
 See [examples/synth.html](examples/synth.html).
 

@@ -1,0 +1,71 @@
+/* Dialog — native <dialog> as a box with the hard purple offset (the rare splash).
+   Opens instantly, Esc closes, <form method="dialog"> buttons close with a value. */
+.flw-dialog {
+  width: min(56ch, calc(100vw - 2 * var(--space-4)));
+  max-height: calc(100vh - 2 * var(--space-4));
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--c-gray);
+  background: var(--c-bg);
+  color: var(--c-gray);
+  box-shadow: 6px 6px 0 rgba(var(--c-purple-rgb), 0.5);
+}
+
+.flw-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.flw-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.flw-dialog--danger {
+  border-color: var(--c-red);
+}
+
+.flw-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-top: 1px solid var(--c-dark-gray);
+}
+
+/* Toasts — log lines stacking up in the corner, not colored cards */
+.flw-toasts {
+  position: fixed;
+  right: var(--flw-toasts-right, var(--space-3));
+  bottom: var(--flw-toasts-bottom, var(--space-3));
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+  max-width: calc(100vw - 2 * var(--space-3));
+  pointer-events: none;
+}
+
+.flw-toast {
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  max-width: 64ch;
+  padding: 2px var(--space-2);
+  border: 1px solid var(--c-dark-gray);
+  background: var(--c-bg);
+  color: var(--c-white);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.flw-toast__time {
+  color: var(--c-gray);
+}
+
+.flw-toast__mark { color: var(--c-green); }
+.flw-toast--info .flw-toast__mark { color: var(--c-blue); }
+.flw-toast--warn .flw-toast__mark { color: var(--c-orange); }
+.flw-toast--error .flw-toast__mark { color: var(--c-red); }
+.flw-toast--error { border-color: var(--c-red); }

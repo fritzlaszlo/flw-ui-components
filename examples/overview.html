@@ -580,6 +580,103 @@
           </div>
         </div>
       </div>
+
+      <div class="demo-block">
+        <div class="demo-label">tree — nested lists, details for collapsible branches</div>
+        <div class="flw-box" style="max-width:360px">
+          <div class="flw-box__title"><span class="flw-box__title-text"><span class="flw-box__icon">🪺</span>scene</span><span class="flw-box__title-extra flw-text-gray flw-sm">7 nodes</span></div>
+          <div class="flw-box__content">
+            <ul class="flw-tree">
+              <li>
+                <details open>
+                  <summary class="flw-tree__row"><span class="flw-tree__label">world</span><span class="flw-tree__meta">group</span></summary>
+                  <ul>
+                    <li><span class="flw-tree__row"><span class="flw-tree__label">camera</span><span class="flw-tree__meta">persp</span></span></li>
+                    <li>
+                      <details open>
+                        <summary class="flw-tree__row"><span class="flw-tree__label">rig</span><span class="flw-tree__meta">group</span></summary>
+                        <ul>
+                          <li><span class="flw-tree__row flw-tree__row--active"><span class="flw-tree__label">ratte.glb</span><span class="flw-tree__meta">mesh</span></span></li>
+                          <li><span class="flw-tree__row"><span class="flw-tree__label">tail-bones</span><span class="flw-tree__meta">armature</span></span></li>
+                        </ul>
+                      </details>
+                    </li>
+                    <li>
+                      <details>
+                        <summary class="flw-tree__row"><span class="flw-tree__label">lights</span><span class="flw-tree__meta">2</span></summary>
+                        <ul>
+                          <li><span class="flw-tree__row"><span class="flw-tree__label">key</span></span></li>
+                          <li><span class="flw-tree__row"><span class="flw-tree__label">rim</span></span></li>
+                        </ul>
+                      </details>
+                    </li>
+                    <li><span class="flw-tree__row"><span class="flw-tree__label">floor</span><span class="flw-tree__meta">plane</span></span></li>
+                  </ul>
+                </details>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">sparkline + meter — history in one line, level in a column</div>
+        <div class="flw-row flw-gap-4" style="align-items:flex-end">
+          <div class="flw-data-grid">
+            <span class="flw-text-gray">fps</span><span class="flw-spark" data-flw-spark="58 60 60 59 41 22 38 57 60 60 60 59 60 60 48 60" data-flw-spark-min="0" data-flw-spark-max="60"></span><span class="flw-data-grid__num flw-text-white">60</span>
+            <span class="flw-text-gray">cpu</span><span class="flw-spark flw-text-blue" data-flw-spark="12 14 13 30 62 80 44 20 15 13 12 18 22 19 14 12" data-flw-spark-min="0" data-flw-spark-max="100"></span><span class="flw-data-grid__num flw-text-white">12%</span>
+            <span class="flw-text-gray">env</span><span class="flw-spark flw-text-purple" data-flw-spark="0 4 8 7 6 5 5 5 5 5 5 4 3 2 1 0"></span><span class="flw-data-grid__num flw-text-white">adsr</span>
+          </div>
+          <div class="flw-meters" id="demo-meters">
+            <span class="flw-meter" data-flw-meter="45"></span>
+            <span class="flw-meter" data-flw-meter="78"></span>
+            <span class="flw-meter" data-flw-meter="96"></span>
+            <span class="flw-meter" data-flw-meter="20" data-flw-meter-width="2"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">dialog + toast — native &lt;dialog&gt;, log lines in the corner</div>
+        <div class="flw-cluster">
+          <button type="button" class="flw-btn" data-flw-open="#demo-dialog">save as…</button>
+          <button type="button" class="flw-btn flw-btn--danger" data-flw-open="#demo-dialog-danger">delete patch</button>
+          <button type="button" class="flw-btn" onclick="flw.toast('export done · ratte.glb 2.4 MB')">toast ok</button>
+          <button type="button" class="flw-btn" onclick="flw.toast('midi device reconnected', { status: 'info' })">toast info</button>
+          <button type="button" class="flw-btn" onclick="flw.toast('buffer underrun · 3 frames dropped', { status: 'warn' })">toast warn</button>
+          <button type="button" class="flw-btn" onclick="flw.toast('websocket lost', { status: 'error', timeout: 0 })">toast error (sticky)</button>
+        </div>
+        <dialog class="flw-dialog" id="demo-dialog">
+          <form method="dialog">
+            <div class="flw-box__title"><span class="flw-box__title-text"><span class="flw-box__icon">🐚</span>save patch as</span></div>
+            <div class="flw-box__content flw-stack">
+              <div class="flw-field">
+                <label class="flw-field__label" for="patch-name">name</label>
+                <input class="flw-input" id="patch-name" type="text" value="güterbahnhof 2" />
+              </div>
+              <label class="flw-toggle">
+                <input class="flw-toggle__input" type="checkbox" checked />
+                <span class="flw-toggle__switch"></span>
+                <span class="flw-toggle__label">include sequence</span>
+              </label>
+            </div>
+            <div class="flw-dialog__actions">
+              <button class="flw-btn" value="cancel">cancel</button>
+              <button class="flw-btn flw-btn--primary" value="save">save</button>
+            </div>
+          </form>
+        </dialog>
+        <dialog class="flw-dialog flw-dialog--danger" id="demo-dialog-danger">
+          <form method="dialog">
+            <div class="flw-box__title"><span class="flw-box__title-text flw-text-red">delete “kellerbrummen”?</span></div>
+            <div class="flw-box__content flw-prose">The patch and its 4 variations are gone for good. <strong>No undo.</strong></div>
+            <div class="flw-dialog__actions">
+              <button class="flw-btn" value="cancel">keep</button>
+              <button class="flw-btn flw-btn--danger" value="delete">delete</button>
+            </div>
+          </form>
+        </dialog>
+      </div>
     </section>
 
     <hr class="flw-rule" />

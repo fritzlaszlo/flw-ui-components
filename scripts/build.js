@@ -15,7 +15,6 @@ const cssFiles = [
   'glyphs.css',
   'tokens.css',
   'base.css',
-  'utilities.css',
   'typography.css',
   'layout.css',
   'components/box.css',
@@ -27,12 +26,17 @@ const cssFiles = [
   'components/choice.css',
   'components/progress.css',
   'components/shade.css',
+  'components/spark.css',
   'components/status.css',
   'components/spinner.css',
   'components/sep.css',
   'components/marquee.css',
   'components/accordion.css',
-  'components/tabs.css'
+  'components/tabs.css',
+  'components/tree.css',
+  'components/dialog.css',
+  // last, so helpers like .flw-text-blue override component defaults
+  'utilities.css'
 ]
 
 function copyDir(src, dest) {

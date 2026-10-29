@@ -54,6 +54,48 @@
     cleanups.set(el, () => clearInterval(id))
   }
 
+  const SPARK_CHARS = '▁▂▃▄▅▆▇█'
+
+  function sparkline(values, min, max) {
+    if (!values.length) return ''
+    const lo = Number.isFinite(min) ? min : Math.min(...values)
+    const hi = Number.isFinite(max) ? max : Math.max(...values)
+    const span = hi - lo || 1
+    return values
+      .map((v) => {
+        const t = (Math.min(hi, Math.max(lo, v)) - lo) / span
+        return SPARK_CHARS[Math.round(t * (SPARK_CHARS.length - 1))]
+      })
+      .join('')
+  }
+
+  function spark(el, values, options) {
+    const opts = options || {}
+    const min = opts.min ?? (el.dataset.flwSparkMin === undefined ? NaN : Number(el.dataset.flwSparkMin))
+    const max = opts.max ?? (el.dataset.flwSparkMax === undefined ? NaN : Number(el.dataset.flwSparkMax))
+    el.textContent = sparkline(values, min, max)
+  }
+
+  // vertical cells, bottom up; color by height: green, orange above 70 %, red above 90 %
+  function meter(el, pct, options) {
+    const opts = options || {}
+    const height = opts.height || Number(el.dataset.flwMeterHeight) || 8
+    const width = opts.width || Number(el.dataset.flwMeterWidth) || 1
+    const clamped = Math.min(100, Math.max(0, pct))
+    el.textContent = ''
+    for (let row = height; row >= 1; row--) {
+      const top = (row / height) * 100
+      const cell = document.createElement('span')
+      const on = clamped >= top - 100 / height / 2
+      cell.textContent = (on ? '█' : '░').repeat(width)
+      if (on) {
+        const level = top > 90 ? 'peak' : top > 70 ? 'warn' : 'on'
+        cell.className = `flw-meter__cell--${level}`
+      }
+      el.appendChild(cell)
+    }
+  }
+
   function shadeLevel(pct) {
     if (pct >= 80) return 3
     if (pct >= 50) return 2
@@ -267,6 +309,57 @@
     })
   }
 
+  const TOAST_MARKS = { ok: '●', info: '●', warn: '●', error: '○' }
+
+  function toast(message, options) {
+    const opts = options || {}
+    const status = opts.status || 'ok'
+    const timeout = opts.timeout === undefined ? 4000 : opts.timeout
+
+    let root = document.querySelector('.flw-toasts')
+    if (!root) {
+      root = document.createElement('div')
+      root.className = 'flw-toasts'
+      root.setAttribute('role', 'status')
+      root.setAttribute('aria-live', 'polite')
+      // inside the app shell so it can lift the stack above the status bar
+      ;(document.querySelector('.flw-app') || document.body).appendChild(root)
+    }
+
+    const now = new Date()
+    const pad = (n) => String(n).padStart(2, '0')
+    const line = document.createElement('div')
+    line.className = `flw-toast flw-toast--${status}`
+    const time = document.createElement('span')
+    time.className = 'flw-toast__time'
+    time.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`
+    const mark = document.createElement('span')
+    mark.className = 'flw-toast__mark'
+    mark.textContent = TOAST_MARKS[status] || '●'
+    const text = document.createElement('span')
+    text.textContent = message
+    line.append(time, mark, text)
+
+    const remove = () => line.remove()
+    line.addEventListener('click', remove)
+    if (timeout > 0) setTimeout(remove, timeout)
+
+    root.appendChild(line)
+    while (root.children.length > (opts.max || 5)) root.firstElementChild.remove()
+    return line
+  }
+
+  // <button data-flw-open="#dialog-id"> opens a <dialog class="flw-dialog"> modally
+  function opener(el) {
+    cleanup(el)
+    const onClick = () => {
+      const target = document.querySelector(el.dataset.flwOpen)
+      if (target && typeof target.showModal === 'function') target.showModal()
+    }
+    el.addEventListener('click', onClick)
+    cleanups.set(el, () => el.removeEventListener('click', onClick))
+  }
+
   function accordion(root) {
     const mode = root.dataset.flwAccordion || 'single'
     const items = [...root.querySelectorAll('.flw-accordion__item')]
@@ -360,6 +453,17 @@
     scope.querySelectorAll('[data-flw-accordion]').forEach(accordion)
     scope.querySelectorAll('[data-flw-tabs]').forEach(tabs)
 
+    scope.querySelectorAll('[data-flw-open]').forEach(opener)
+
+    scope.querySelectorAll('[data-flw-spark]').forEach((el) => {
+      const values = el.dataset.flwSpark.split(/[\s,]+/).filter(Boolean).map(Number)
+      spark(el, values)
+    })
+
+    scope.querySelectorAll('[data-flw-meter]').forEach((el) => {
+      meter(el, Number(el.dataset.flwMeter) || 0)
+    })
+
     scope.querySelectorAll('[data-flw-shade]').forEach((el) => {
       shade(el, Number(el.dataset.flwShade) || 0)
     })
@@ -370,7 +474,7 @@
     })
   }
 
-  const flw = { spinner, marquee, range, scrub, bar, shade, shadeLevel, accordion, tabs, auto, glyphBar, severityClass }
+  const flw = { spinner, marquee, range, scrub, bar, shade, shadeLevel, spark, sparkline, meter, toast, accordion, tabs, auto, glyphBar, severityClass }
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = flw

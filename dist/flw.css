@@ -280,96 +280,6 @@ body {
   outline-offset: 2px;
 }
 
-/* ── utilities.css ── */
-/* Text colors */
-.flw-text-white { color: var(--c-white); }
-.flw-text-gray { color: var(--c-gray); }
-.flw-text-dark { color: var(--c-dark-gray); }
-.flw-text-red { color: var(--c-red); }
-.flw-text-green { color: var(--c-green); }
-.flw-text-blue { color: var(--c-blue); }
-.flw-text-purple { color: var(--c-purple); }
-.flw-text-orange { color: var(--c-orange); }
-
-/* Data register */
-.flw-data-very-cold { color: var(--c-data-very-cold); }
-.flw-data-cold { color: var(--c-data-cold); }
-.flw-data-mild { color: var(--c-data-mild); }
-.flw-data-warm { color: var(--c-data-warm); }
-.flw-data-hot { color: var(--c-data-hot); }
-
-/* Background */
-.flw-bg-dark { background: var(--c-dark-gray); }
-
-/* State opacity */
-.flw-dim { opacity: 0.7; }
-.flw-stale { opacity: 0.5; }
-
-/* Typography helpers */
-.flw-mono { font-family: var(--font-mono); }
-.flw-bold { font-weight: 700; }
-.flw-strike { text-decoration: line-through; }
-
-/* Flex / gap / padding utilities */
-.flw-sm { font-size: var(--font-size-sm); }
-.flw-lg { font-size: var(--font-size-lg); }
-.flw-flex { display: flex; }
-.flw-flex-col { flex-direction: column; }
-.flw-flex-row { flex-direction: row; }
-.flw-flex-1 { flex: 1; }
-.flw-flex-wrap { flex-wrap: wrap; }
-.flw-items-center { align-items: center; }
-.flw-justify-between { justify-content: space-between; }
-
-.flw-gap-1 { gap: var(--space-1); }
-.flw-gap-2 { gap: var(--space-2); }
-.flw-gap-3 { gap: var(--space-3); }
-.flw-gap-4 { gap: var(--space-4); }
-
-.flw-p-1 { padding: var(--space-1); }
-.flw-p-2 { padding: var(--space-2); }
-.flw-p-3 { padding: var(--space-3); }
-.flw-p-4 { padding: var(--space-4); }
-.flw-px-2 { padding-left: var(--space-2); padding-right: var(--space-2); }
-.flw-py-1 { padding-top: var(--space-1); padding-bottom: var(--space-1); }
-
-.flw-w-full { width: 100%; }
-.flw-h-full { height: 100%; }
-.flw-min-w-0 { min-width: 0; }
-
-.flw-truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Border helpers */
-.flw-border {
-  border: 1px solid var(--c-dark-gray);
-}
-
-.flw-border-active {
-  border: 1px solid var(--c-gray);
-}
-
-/* Horizontal mono rule */
-.flw-rule {
-  display: block;
-  border: none;
-  border-top: 1px solid var(--c-dark-gray);
-  margin: var(--space-2) 0;
-}
-
-.flw-rule--strong {
-  border-top-width: 6px;
-  border-top-color: var(--c-gray);
-}
-
-/* Letter-spacing for dense data rows */
-.flw-data-row {
-  letter-spacing: 0.04em;
-}
-
 /* ── typography.css ── */
 /* Long-form text inside boxes / panels */
 .flw-prose {
@@ -560,6 +470,7 @@ body {
   height: 100dvh;
   padding: var(--space-2);
   overflow: hidden;
+  --flw-toasts-bottom: calc(var(--space-2) * 2 + var(--font-size-sm) * var(--line-height));
 }
 
 .flw-app__bar {
@@ -1245,6 +1156,37 @@ body {
   font-weight: 700;
 }
 
+/* ── components/spark.css ── */
+/* Sparkline — history in one line of ▁▂▃▄▅▆▇█ (fps, cpu, envelope) */
+.flw-spark {
+  display: inline-block;
+  color: var(--c-green);
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: pre;
+  vertical-align: baseline;
+}
+
+/* Meter — vertical level in █ / ░ cells, filled from the bottom (audio, tank, queue) */
+.flw-meter {
+  display: inline-flex;
+  flex-direction: column;
+  color: var(--c-dark-gray);
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: pre;
+}
+
+.flw-meter__cell--on { color: var(--c-green); }
+.flw-meter__cell--warn { color: var(--c-orange); }
+.flw-meter__cell--peak { color: var(--c-red); }
+
+.flw-meters {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1px;
+}
+
 /* ── components/status.css ── */
 /* Glyph status dots */
 .flw-dot {
@@ -1583,4 +1525,274 @@ body {
 
 .flw-tabs__panel:not([hidden]) {
   display: block;
+}
+
+/* ── components/tree.css ── */
+/* Tree — scene graph, layers, file system: nested lists with ├─ └─ │ connectors.
+   Connectors are 1px lines (not glyphs) so they stay unbroken at any line height.
+   Branches can be <details> for native collapse with ▶ / ▼. */
+.flw-tree,
+.flw-tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.flw-tree ul {
+  margin-left: 0.5ch;
+}
+
+.flw-tree ul > li {
+  position: relative;
+  padding-left: 2ch;
+}
+
+/* │ — runs through the whole item, so it passes its children */
+.flw-tree ul > li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-left: 1px solid var(--c-dark-gray);
+}
+
+/* └ — the last child stops at its own row */
+.flw-tree ul > li:last-child::before {
+  bottom: auto;
+  height: calc(var(--line-height) * 0.5em);
+}
+
+/* ─ */
+.flw-tree ul > li::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--line-height) * 0.5em);
+  left: 0;
+  width: 1.5ch;
+  border-top: 1px solid var(--c-dark-gray);
+}
+
+.flw-tree__row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  min-width: 0;
+  color: var(--c-gray);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.flw-tree__row:hover {
+  color: var(--c-white);
+}
+
+.flw-tree__row--active {
+  color: var(--c-white);
+  font-weight: 700;
+}
+
+.flw-tree__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flw-tree__meta {
+  margin-left: auto;
+  padding-left: var(--space-2);
+  color: var(--c-gray);
+  opacity: 0.7;
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+}
+
+/* Collapsible branch */
+.flw-tree summary.flw-tree__row {
+  list-style: none;
+  cursor: pointer;
+}
+
+.flw-tree summary.flw-tree__row::-webkit-details-marker {
+  display: none;
+}
+
+.flw-tree summary.flw-tree__row::before {
+  content: '▶';
+  width: 1ch;
+  flex-shrink: 0;
+  color: var(--c-gray);
+  font-weight: 400;
+}
+
+.flw-tree details[open] > summary.flw-tree__row::before {
+  content: '▼';
+}
+
+.flw-tree summary.flw-tree__row:focus-visible {
+  outline: 1px solid var(--c-gray);
+  outline-offset: 1px;
+}
+
+/* ── components/dialog.css ── */
+/* Dialog — native <dialog> as a box with the hard purple offset (the rare splash).
+   Opens instantly, Esc closes, <form method="dialog"> buttons close with a value. */
+.flw-dialog {
+  width: min(56ch, calc(100vw - 2 * var(--space-4)));
+  max-height: calc(100vh - 2 * var(--space-4));
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--c-gray);
+  background: var(--c-bg);
+  color: var(--c-gray);
+  box-shadow: 6px 6px 0 rgba(var(--c-purple-rgb), 0.5);
+}
+
+.flw-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.flw-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.flw-dialog--danger {
+  border-color: var(--c-red);
+}
+
+.flw-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-top: 1px solid var(--c-dark-gray);
+}
+
+/* Toasts — log lines stacking up in the corner, not colored cards */
+.flw-toasts {
+  position: fixed;
+  right: var(--flw-toasts-right, var(--space-3));
+  bottom: var(--flw-toasts-bottom, var(--space-3));
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+  max-width: calc(100vw - 2 * var(--space-3));
+  pointer-events: none;
+}
+
+.flw-toast {
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  max-width: 64ch;
+  padding: 2px var(--space-2);
+  border: 1px solid var(--c-dark-gray);
+  background: var(--c-bg);
+  color: var(--c-white);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.flw-toast__time {
+  color: var(--c-gray);
+}
+
+.flw-toast__mark { color: var(--c-green); }
+.flw-toast--info .flw-toast__mark { color: var(--c-blue); }
+.flw-toast--warn .flw-toast__mark { color: var(--c-orange); }
+.flw-toast--error .flw-toast__mark { color: var(--c-red); }
+.flw-toast--error { border-color: var(--c-red); }
+
+/* ── utilities.css ── */
+/* Text colors */
+.flw-text-white { color: var(--c-white); }
+.flw-text-gray { color: var(--c-gray); }
+.flw-text-dark { color: var(--c-dark-gray); }
+.flw-text-red { color: var(--c-red); }
+.flw-text-green { color: var(--c-green); }
+.flw-text-blue { color: var(--c-blue); }
+.flw-text-purple { color: var(--c-purple); }
+.flw-text-orange { color: var(--c-orange); }
+
+/* Data register */
+.flw-data-very-cold { color: var(--c-data-very-cold); }
+.flw-data-cold { color: var(--c-data-cold); }
+.flw-data-mild { color: var(--c-data-mild); }
+.flw-data-warm { color: var(--c-data-warm); }
+.flw-data-hot { color: var(--c-data-hot); }
+
+/* Background */
+.flw-bg-dark { background: var(--c-dark-gray); }
+
+/* State opacity */
+.flw-dim { opacity: 0.7; }
+.flw-stale { opacity: 0.5; }
+
+/* Typography helpers */
+.flw-mono { font-family: var(--font-mono); }
+.flw-bold { font-weight: 700; }
+.flw-strike { text-decoration: line-through; }
+
+/* Flex / gap / padding utilities */
+.flw-sm { font-size: var(--font-size-sm); }
+.flw-lg { font-size: var(--font-size-lg); }
+.flw-flex { display: flex; }
+.flw-flex-col { flex-direction: column; }
+.flw-flex-row { flex-direction: row; }
+.flw-flex-1 { flex: 1; }
+.flw-flex-wrap { flex-wrap: wrap; }
+.flw-items-center { align-items: center; }
+.flw-justify-between { justify-content: space-between; }
+
+.flw-gap-1 { gap: var(--space-1); }
+.flw-gap-2 { gap: var(--space-2); }
+.flw-gap-3 { gap: var(--space-3); }
+.flw-gap-4 { gap: var(--space-4); }
+
+.flw-p-1 { padding: var(--space-1); }
+.flw-p-2 { padding: var(--space-2); }
+.flw-p-3 { padding: var(--space-3); }
+.flw-p-4 { padding: var(--space-4); }
+.flw-px-2 { padding-left: var(--space-2); padding-right: var(--space-2); }
+.flw-py-1 { padding-top: var(--space-1); padding-bottom: var(--space-1); }
+
+.flw-w-full { width: 100%; }
+.flw-h-full { height: 100%; }
+.flw-min-w-0 { min-width: 0; }
+
+.flw-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Border helpers */
+.flw-border {
+  border: 1px solid var(--c-dark-gray);
+}
+
+.flw-border-active {
+  border: 1px solid var(--c-gray);
+}
+
+/* Horizontal mono rule */
+.flw-rule {
+  display: block;
+  border: none;
+  border-top: 1px solid var(--c-dark-gray);
+  margin: var(--space-2) 0;
+}
+
+.flw-rule--strong {
+  border-top-width: 6px;
+  border-top-color: var(--c-gray);
+}
+
+/* Letter-spacing for dense data rows */
+.flw-data-row {
+  letter-spacing: 0.04em;
 }

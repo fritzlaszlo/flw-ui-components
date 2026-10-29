@@ -55,6 +55,10 @@ Optional JS widgets use `data-flw-*` attributes:
 - `data-flw-tabs` — tab panels
 - `data-flw-bar` + `data-flw-bar-value="42"` — glyph progress bar (`data-flw-bar-color="blue"` for identity color)
 - `data-flw-shade="65"` — ░ ▒ ▓ intensity behind a value
+- `data-flw-spark="1 4 2 8"` — ▁▂▃▅ sparkline (`flw.spark(el, values)` for live data)
+- `data-flw-meter="78"` — vertical █/░ level meter (`flw.meter(el, pct)`)
+- `data-flw-open="#dialog-id"` — opens a `<dialog class="flw-dialog">` modally
+- `flw.toast('saved', { status: 'ok' | 'info' | 'warn' | 'error', timeout })` — log-line notification
 
 CSS works without JS. Accordion also works via `<details class="flw-details">`. Tabs require JS.
 
