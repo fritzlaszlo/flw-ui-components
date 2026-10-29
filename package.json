@@ -1,8 +1,13 @@
 {
   "name": "flw",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Personal DIY terminal-style CSS library for self-hosted projects",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fritzlaszlo/flw-ui-components.git"
+  },
   "style": "dist/flw.css",
   "main": "dist/flw.js",
   "files": [
@@ -10,7 +15,11 @@
     "fonts",
     "src",
     "js",
-    "examples"
+    "examples/overview.html",
+    "examples/synth.html",
+    "AGENTS.md",
+    "STYLE_GUIDE.md",
+    "LICENSE"
   ],
   "scripts": {
     "fetch-fonts": "node scripts/fetch-fonts.js",
@@ -21,6 +30,5 @@
     "css",
     "terminal",
     "self-hosted"
-  ],
-  "license": "UNLICENSED"
+  ]
 }

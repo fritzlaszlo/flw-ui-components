@@ -1,39 +1,61 @@
 # flw
 
-Personal DIY terminal-style CSS library for self-hosted projects (Pi kiosks, intranet panels, irrigation toggles, etc.).
+Personal DIY terminal-style CSS library for self-hosted projects (Pi kiosks, intranet panels, irrigation toggles, synths, generators, etc.).
 
 Visual philosophy: [STYLE_GUIDE.md](STYLE_GUIDE.md)  
 Agent instructions: [AGENTS.md](AGENTS.md)
 
-**MCU displays (ESP32 / Arduino):** companion package [09-flw-UI-microcontroller-components](../09-flw-UI-microcontroller-components) — TFT preview lab, RGB565 tokens, Public Pixel charset.
+**MCU displays (ESP32 / Arduino):** companion package `09-flw-UI-microcontroller-components` (separate, local) — TFT preview lab, RGB565 tokens, Public Pixel charset.
 
-## Install
+## Use in other projects
 
-**First-time setup** (downloads SIL OFL fonts into `fonts/`; the glyph subsets are committed, regenerate with `python3 scripts/fetch-glyphs.py`):
+Pin a tag so a project only changes when you bump it. `dist/` is committed — no build step on the consuming side; fonts and glyphs travel with it.
 
-```bash
-npm run fetch-fonts
-npm run build
-```
-
-**Copy (simplest)**
-
-```bash
-npm run build
-cp -r dist/flw.css dist/flw.js dist/fonts /path/to/your/project/
-```
-
-**Git dependency** (when this repo is available locally or via git)
+**npm / Vite projects** — git dependency:
 
 ```json
-{
-  "dependencies": {
-    "flw": "file:../08-flw-UI-components"
-  }
-}
+{ "dependencies": { "flw": "github:fritzlaszlo/flw-ui-components#v0.2.0" } }
 ```
 
-Then link `node_modules/flw/dist/flw.css`.
+```js
+import 'flw/dist/flw.css'
+import flw from 'flw' // optional widgets
+flw.auto()
+```
+
+**Plain HTML, Pi kiosks** — vendor the built files into the project (works offline afterwards):
+
+```bash
+npx degit fritzlaszlo/flw-ui-components/dist#v0.2.0 vendor/flw
+```
+
+```html
+<link rel="stylesheet" href="vendor/flw/flw.css" />
+<script src="vendor/flw/flw.js"></script>
+```
+
+**Quick sketches** — straight from the CDN (needs network at runtime, so not for kiosks):
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fritzlaszlo/flw-ui-components@v0.2.0/dist/flw.css" />
+<script src="https://cdn.jsdelivr.net/gh/fritzlaszlo/flw-ui-components@v0.2.0/dist/flw.js"></script>
+```
+
+**Agents in the consuming project** — `AGENTS.md` and `STYLE_GUIDE.md` ship with the package. Add one line to that project's `CLAUDE.md`:
+
+```
+@node_modules/flw/AGENTS.md
+```
+
+**Local sibling checkout** — `"flw": "file:../08-flw-UI-components"` still works while hacking on flw itself.
+
+Live catalog: https://fritzlaszlo.github.io/flw-ui-components/ (overview) and [/synth](https://fritzlaszlo.github.io/flw-ui-components/synth) (app shell).
+
+### Releasing
+
+1. Bump `version` in `package.json` (the build banner reads it)
+2. `npm run build` and commit
+3. `git tag vX.Y.Z && git push origin main --tags`
 
 ## Usage
 
@@ -62,7 +84,16 @@ Optional JS widgets use `data-flw-*` attributes:
 
 CSS works without JS. Accordion also works via `<details class="flw-details">`. Tabs require JS.
 
-## Build
+## Developing flw
+
+**First-time setup** (downloads SIL OFL fonts into `fonts/`; the glyph subsets are committed, regenerate with `python3 scripts/fetch-glyphs.py`):
+
+```bash
+npm run fetch-fonts
+npm run build
+```
+
+### Build
 
 ```bash
 npm run build
@@ -70,7 +101,7 @@ npm run build
 
 Outputs `dist/flw.css` and `dist/flw.js`.
 
-## Visual QA
+### Visual QA
 
 ```bash
 npm run serve
@@ -82,7 +113,7 @@ Open http://localhost:5173/overview — catalog of every token, utility, layout,
 
 Workflow: change CSS in `src/` → `npm run build` (or re-run `serve`) → refresh overview.
 
-## Structure
+### Structure
 
 ```
 src/tokens.css          design tokens
@@ -98,3 +129,7 @@ js/flw.js               optional behavior
 examples/overview.html  debug catalog
 examples/synth.html     app shell example (drone-o-mat)
 ```
+
+## License
+
+Code: [MIT](LICENSE). Bundled fonts keep their own licenses — SIL OFL 1.1 (Space Mono, Noto Emoji) and the Bitstream Vera / DejaVu license (flw Glyphs); full texts in [fonts/](fonts/LICENSE.md).
