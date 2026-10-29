@@ -37,6 +37,8 @@ Before inventing a new pattern, check [examples/overview.html](examples/overview
               └── .flw-stat-rows / .flw-data-grid / .flw-cluster / forms / progress
 ```
 
+Web tools (generators, synths, 3D builders): **`.flw-app` shell** — `__bar` / `__side` · `__main` · `__inspector` / `__status`, work surface as `.flw-box__content--flush` + `.flw-hud`. Reference: [examples/synth.html](examples/synth.html).
+
 Dashboards and kiosks: **columns of stacks** — `.flw-grid.flw-cols-3`, one `.flw-stack` of boxes per column, so uneven boxes pack without row gaps.
 
 When a page grows beyond ~3 peer boxes, use `.flw-accordion` or `.flw-tabs` instead of endless scrolling stacks.
@@ -67,6 +69,8 @@ When a page grows beyond ~3 peer boxes, use `.flw-accordion` or `.flw-tabs` inst
 - Use `.flw-toggle` for on/off controls
 - Use `.flw-slider` for discrete choices with more than two options (levels, durations, modes)
 - Use `.flw-range` + `data-flw-range` for continuous numeric values (0–100 px, gain, opacity)
+- Use `.flw-choice` for one of a few options *without* order (wave, blend mode, tool) — slider implies order
+- Use `.flw-scrub` + `data-flw-scrub` (`type="text" inputmode="decimal"`) for numbers in dense parameter panels
 - Use terminal glyphs first: `█ ░ ● ○ ▶ ▼`
 - Use `.flw-sep` between metadata tokens
 - Use `.flw-stale` / `.flw-dim` for degraded/secondary content
@@ -155,6 +159,20 @@ Use `.flw-prose` inside boxes for notes, logs, or short explanations. Stay at ba
     <span class="flw-slider__value">high</span>
   </label>
 </div>
+
+<!-- unordered options -->
+<div class="flw-choice" role="radiogroup" aria-label="wave">
+  <span class="flw-choice__label">wave</span>
+  <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="wave" value="sine" checked /><span class="flw-choice__text">sine</span></label>
+  <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="wave" value="saw" /><span class="flw-choice__text">saw</span></label>
+</div>
+
+<!-- compact number: drag sideways, click to type -->
+<label class="flw-scrub" data-flw-scrub>
+  <span class="flw-scrub__label">freq</span>
+  <input class="flw-scrub__input" type="text" inputmode="decimal" min="20" max="2000" step="1" value="220" />
+  <span class="flw-scrub__unit">Hz</span>
+</label>
 
 <!-- continuous value: step sets resolution, readout synced by flw.js -->
 <div class="flw-range" data-flw-range>

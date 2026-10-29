@@ -55,6 +55,7 @@
     <a href="#components">components</a>
     <a href="#patterns">patterns</a>
     <a href="#js">js</a>
+    <a href="synth" class="flw-text-purple">synth →</a>
   </nav>
 
   <main class="flw-page">
@@ -524,6 +525,58 @@
             <label class="flw-range__label" for="locked">locked</label>
             <input class="flw-range__input" id="locked" type="range" min="0" max="100" value="70" disabled />
             <span class="flw-range__readout"><output class="flw-range__value" for="locked">70</output><span class="flw-range__unit">%</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">scrub — drag sideways (1 step / px, shift ×10), click to type</div>
+        <div class="flw-cluster">
+          <label class="flw-scrub" data-flw-scrub>
+            <span class="flw-scrub__label">freq</span>
+            <input class="flw-scrub__input" type="text" inputmode="decimal" min="20" max="2000" step="1" value="220" />
+            <span class="flw-scrub__unit">Hz</span>
+          </label>
+          <label class="flw-scrub" data-flw-scrub>
+            <span class="flw-scrub__label">gain</span>
+            <input class="flw-scrub__input" type="text" inputmode="decimal" min="0" max="1" step="0.01" value="0.80" />
+          </label>
+          <label class="flw-scrub" data-flw-scrub>
+            <span class="flw-scrub__label">rot</span>
+            <input class="flw-scrub__input" type="text" inputmode="decimal" min="-180" max="180" step="0.5" value="12.5" />
+            <span class="flw-scrub__unit">°</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">choice — one of a few options without order (radio group)</div>
+        <div class="flw-stack">
+          <div class="flw-choice" role="radiogroup" aria-label="wave">
+            <span class="flw-choice__label">wave</span>
+            <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="ov-wave" value="sine" /><span class="flw-choice__text">sine</span></label>
+            <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="ov-wave" value="saw" checked /><span class="flw-choice__text">saw</span></label>
+            <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="ov-wave" value="square" /><span class="flw-choice__text">square</span></label>
+            <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="ov-wave" value="noise" /><span class="flw-choice__text">noise</span></label>
+          </div>
+          <div class="flw-choice" role="radiogroup" aria-label="blend">
+            <span class="flw-choice__label">blend</span>
+            <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="ov-blend" value="normal" checked /><span class="flw-choice__text">normal</span></label>
+            <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="ov-blend" value="add" /><span class="flw-choice__text">add</span></label>
+            <label class="flw-choice__option"><input class="flw-choice__input" type="radio" name="ov-blend" value="multiply" /><span class="flw-choice__text">multiply</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-block">
+        <div class="demo-label">flush box + hud — canvas / WebGL surface (full app shell: <a class="flw-text-purple" href="synth">synth example</a>)</div>
+        <div class="flw-box" style="max-width:480px">
+          <div class="flw-box__title"><span class="flw-box__title-text"><span class="flw-box__icon">🕳</span>viewport</span></div>
+          <div class="flw-box__content flw-box__content--flush" style="height:160px; background-image: linear-gradient(var(--c-dark-gray) 1px, transparent 1px), linear-gradient(90deg, var(--c-dark-gray) 1px, transparent 1px); background-size: 24px 24px">
+            <div class="flw-hud flw-hud--tl"><span>persp</span><span class="flw-text-white">cam 1</span></div>
+            <div class="flw-hud flw-hud--tr"><span>60 fps</span></div>
+            <div class="flw-hud flw-hud--bl"><span>x <span class="flw-text-white">12.4</span></span><span>y <span class="flw-text-white">-3.0</span></span><span>z <span class="flw-text-white">0.8</span></span></div>
+            <div class="flw-hud flw-hud--br"><span>zoom 1×</span></div>
           </div>
         </div>
       </div>

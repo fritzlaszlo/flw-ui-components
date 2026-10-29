@@ -182,6 +182,7 @@ No `box-shadow` for elevation or depth. No drop shadows on cards or panels.
 - `.flw-cluster` — wrapping button/toggle groups
 - `.flw-stat-rows` / `.flw-stat-row` — key/value data rows
 - `.flw-data-grid` (+ `--4`) — rows whose columns line up: label · content · value (· status). `__num` right-aligns, `__full` spans the row
+- `.flw-app` — full-height tool shell for web apps (generators, synths, 3D builders): `__bar` on top, `__side` · `__main` · `__inspector`, `__status` at the bottom. Every area optional; side panels scroll on their own, main never scrolls. Stacks into one column below 720px
 - **Columns of stacks** — `.flw-grid.flw-cols-3` with one `.flw-stack` per column. Boxes of uneven height pack per column instead of leaving row gaps; the go-to layout for dashboards
 
 ### Component layout rules
@@ -213,6 +214,8 @@ The primary container. This is the core building block of the UI — directly in
 - Title bar: `.flw-box__title`, `.flw-box__title-text`, optional `.flw-box__title-extra`
 - Content area: `.flw-box__content`, `padding: 8px`
 - No background fill, no border-radius, no shadow
+- Flush content: `.flw-box__content--flush` drops the padding so a canvas / WebGL / video fills the box edge to edge
+- HUD: `.flw-hud` + `--tl` / `--tr` / `--bl` / `--br` floats small readouts (fps, coords, zoom) over a flush surface on the 70 % black overlay
 - Title icon: `.flw-box__icon` — one gray mono emoji in front of the title text, from the project's theme (see *Personality in practice*)
 
 ### Progress Bar (glyph-based) (`.flw-progress`)
@@ -261,6 +264,10 @@ Bordered monospace inputs. Select shows a `▼` affordance on the right.
 **Toggle** (binary on/off): a 12px framed cell in the box border language. Off = gray outline (resting, not red — off is not an error); on = green outline with a solid inner fill. Same weight as surrounding text.
 
 **Slider** (discrete choice with more than two options): a glyph track `──●──` built from a radio group. Track `─` in gray, selected knob `●` in white, hover previews `○`. The selected option's value is shown after the track. Use it for levels, durations, modes — not for binary state (that's the toggle). Works without JS; arrow keys move the knob.
+
+**Choice** (`.flw-choice`, one of a few options *without* order): a radio group in the tab language — options are plain gray text, the picked one gets a 1px frame. Wave shape, blend mode, tool. If the options have an order (low → high, 1/4 → 1/16), use the slider instead; the track promises an order the choice doesn't.
+
+**Scrub** (`.flw-scrub`, compact number): a value you drag sideways — 1 step per pixel, shift ×10; click without dragging to type, up / down arrows step. Dotted underline at rest, green while dragging. The control for dense parameter panels where 40 full-width ranges won't fit. Use `type="text" inputmode="decimal"` (a number input would show a locale comma); JS (`data-flw-scrub`) does the stepping, clamping and snapping, and accepts a typed comma.
 
 **Range** (`.flw-range`, continuous value): the full-resolution sibling of the slider — a native `<input type="range">` drawn as the same track: 1px gray line, white `●` knob with a black ring so the line breaks around it like the glyph. Use it when the value is a number on a scale (px offsets, gain, opacity) rather than a handful of named options. `step` sets the resolution; arrows move one step, shift + arrows ten. JS (`data-flw-range`) keeps the numeric readout in sync; without JS the control still works, the readout just stays static.
 
@@ -345,6 +352,30 @@ Motion is minimal and functional.
 `prefers-reduced-motion` stops spinner and marquee.
 
 No easing curves except linear (and `steps()`). No entrance/exit animations. Motion only appears when it communicates something (activity, overflow text).
+
+---
+
+## Interactive tools
+
+Dashboards are read; tools are worked. When flw drives a generator, a synth or a 3D builder:
+
+**Pick the control by the value, not by the look.**
+
+| Value | Control |
+|---|---|
+| on / off | `.flw-toggle` |
+| one of a few, unordered (wave, blend mode, tool) | `.flw-choice` |
+| one of a few, ordered (rate, quality, size) | `.flw-slider` |
+| a number in a dense panel | `.flw-scrub` |
+| a number that deserves room (cutoff, master, timeline) | `.flw-range` |
+
+**Tool layout.** `.flw-app` shell: toolbar with title and transport (`▶ play` primary, `panic` danger), library or tree on the side, the work surface in the middle as a flush box with a HUD, parameters in the inspector as one box per module (osc, filter, envelope). The status bar is the log line: state dot, sample rate, hints.
+
+**Focus is information.** In a kiosk nothing has focus; in a tool, the field that owns the keyboard must always be visible. Keep `:focus-visible` outlines, mark the active surface with `.flw-box--active`, show dragging in green.
+
+**Hints live in the status bar,** not in tooltips: "drag numbers sideways · shift ×10 · click to type".
+
+See [examples/synth.html](examples/synth.html).
 
 ---
 

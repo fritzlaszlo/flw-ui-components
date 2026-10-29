@@ -85,32 +85,57 @@
     }
   }
 
+  // min / max / step / decimals of a numeric input (range, number or text);
+  // 'any' step falls back to 1 % of the span
+  function numberSpec(input, fallbackMin, fallbackMax) {
+    const stepAttr = input.getAttribute('step') || '1'
+    const minAttr = input.getAttribute('min')
+    const maxAttr = input.getAttribute('max')
+    const min = minAttr === null ? fallbackMin : Number(minAttr)
+    const max = maxAttr === null ? fallbackMax : Number(maxAttr)
+    const span = Number.isFinite(max - min) ? max - min : 100
+    const step = stepAttr === 'any' ? span / 100 : Number(stepAttr)
+    const decimals = stepAttr === 'any' ? 2 : (stepAttr.split('.')[1] || '').length
+    return { min, max, step, decimals }
+  }
+
+  // accepts a decimal comma while typing
+  function readNumber(input) {
+    return Number(String(input.value).replace(',', '.')) || 0
+  }
+
+  function setNumber(input, value, spec) {
+    const base = Number.isFinite(spec.min) ? spec.min : 0
+    const snapped = base + Math.round((value - base) / spec.step) * spec.step
+    const clamped = Math.min(spec.max, Math.max(spec.min, snapped))
+    const next = clamped.toFixed(spec.decimals)
+    if (input.value === next) return
+    input.value = next
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+  }
+
+  // shift + arrows move ten steps (plain arrows stay native: one step)
+  function coarseKeys(input, spec) {
+    return (event) => {
+      const dir = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[event.key]
+      if (!event.shiftKey || !dir) return
+      event.preventDefault()
+      setNumber(input, readNumber(input) + dir * spec.step * 10, spec)
+      input.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+  }
+
   function range(el) {
     cleanup(el)
     const input = el.querySelector('.flw-range__input')
     if (!input) return
     const valueEl = el.querySelector('.flw-range__value')
-
-    const stepAttr = input.getAttribute('step') || '1'
-    const min = Number(input.min || 0)
-    const max = Number(input.max || 100)
-    const step = stepAttr === 'any' ? (max - min) / 100 : Number(stepAttr)
-    const decimals = stepAttr === 'any' ? 2 : (stepAttr.split('.')[1] || '').length
+    const spec = numberSpec(input, 0, 100)
 
     const update = () => {
-      if (valueEl) valueEl.textContent = Number(input.value).toFixed(decimals)
+      if (valueEl) valueEl.textContent = Number(input.value).toFixed(spec.decimals)
     }
-
-    // arrows move one step (native); shift + arrows move ten
-    const onKey = (event) => {
-      const dir = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[event.key]
-      if (!event.shiftKey || !dir) return
-      event.preventDefault()
-      const next = Number(input.value) + dir * step * 10
-      input.value = String(Math.min(max, Math.max(min, next)))
-      input.dispatchEvent(new Event('input', { bubbles: true }))
-      input.dispatchEvent(new Event('change', { bubbles: true }))
-    }
+    const onKey = coarseKeys(input, spec)
 
     update()
     input.addEventListener('input', update)
@@ -118,6 +143,90 @@
 
     cleanups.set(el, () => {
       input.removeEventListener('input', update)
+      input.removeEventListener('keydown', onKey)
+    })
+  }
+
+  // Drag a number sideways: 1 step per px, shift x10. Click without dragging edits it.
+  function scrub(el) {
+    cleanup(el)
+    const input = el.querySelector('.flw-scrub__input')
+    if (!input) return
+    const spec = numberSpec(input, -Infinity, Infinity)
+    let pointerId = null
+    let lastX = 0
+    let moved = 0
+    let raw = 0
+
+    const onDown = (event) => {
+      if (event.button !== 0 || document.activeElement === input) return
+      event.preventDefault()
+      pointerId = event.pointerId
+      lastX = event.clientX
+      moved = 0
+      raw = readNumber(input)
+      input.setPointerCapture(pointerId)
+    }
+
+    const onMove = (event) => {
+      if (event.pointerId !== pointerId) return
+      const dx = event.clientX - lastX
+      lastX = event.clientX
+      moved += Math.abs(dx)
+      if (moved < 3) return
+      el.classList.add('flw-scrub--active')
+      raw += dx * spec.step * (event.shiftKey ? 10 : 1)
+      raw = Math.min(spec.max, Math.max(spec.min, raw))
+      setNumber(input, raw, spec)
+    }
+
+    const onUp = (event) => {
+      if (event.pointerId !== pointerId) return
+      input.releasePointerCapture(pointerId)
+      pointerId = null
+      if (el.classList.contains('flw-scrub--active')) {
+        el.classList.remove('flw-scrub--active')
+        input.dispatchEvent(new Event('change', { bubbles: true }))
+      } else {
+        input.focus()
+        input.select()
+      }
+    }
+
+    // typed values get clamped and snapped like dragged ones
+    const onChange = () => setNumber(input, readNumber(input), spec)
+
+    // up / down step (shift x10); left / right stay with the caret
+    const onKey = (event) => {
+      const dir = { ArrowUp: 1, ArrowDown: -1 }[event.key]
+      if (!dir) return
+      event.preventDefault()
+      setNumber(input, readNumber(input) + dir * spec.step * (event.shiftKey ? 10 : 1), spec)
+      input.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+
+    const syncAria = () => input.setAttribute('aria-valuenow', String(readNumber(input)))
+
+    input.setAttribute('role', 'spinbutton')
+    if (Number.isFinite(spec.min)) input.setAttribute('aria-valuemin', String(spec.min))
+    if (Number.isFinite(spec.max)) input.setAttribute('aria-valuemax', String(spec.max))
+    syncAria()
+
+    input.addEventListener('pointerdown', onDown)
+    input.addEventListener('pointermove', onMove)
+    input.addEventListener('pointerup', onUp)
+    input.addEventListener('pointercancel', onUp)
+    input.addEventListener('change', onChange)
+    input.addEventListener('keydown', onKey)
+    input.addEventListener('input', syncAria)
+
+    cleanups.set(el, () => {
+      input.removeEventListener('input', syncAria)
+      input.removeEventListener('pointerdown', onDown)
+      input.removeEventListener('pointermove', onMove)
+      input.removeEventListener('pointerup', onUp)
+      input.removeEventListener('pointercancel', onUp)
+      input.removeEventListener('change', onChange)
       input.removeEventListener('keydown', onKey)
     })
   }
@@ -247,6 +356,7 @@
     scope.querySelectorAll('[data-flw-spinner]').forEach(spinner)
     scope.querySelectorAll('[data-flw-marquee]').forEach(marquee)
     scope.querySelectorAll('[data-flw-range]').forEach(range)
+    scope.querySelectorAll('[data-flw-scrub]').forEach(scrub)
     scope.querySelectorAll('[data-flw-accordion]').forEach(accordion)
     scope.querySelectorAll('[data-flw-tabs]').forEach(tabs)
 
@@ -260,7 +370,7 @@
     })
   }
 
-  const flw = { spinner, marquee, range, bar, shade, shadeLevel, accordion, tabs, auto, glyphBar, severityClass }
+  const flw = { spinner, marquee, range, scrub, bar, shade, shadeLevel, accordion, tabs, auto, glyphBar, severityClass }
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = flw

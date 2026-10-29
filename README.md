@@ -50,6 +50,7 @@ Optional JS widgets use `data-flw-*` attributes:
 - `data-flw-spinner` — Braille spinner
 - `data-flw-marquee` — scrolling overflow text (`.flw-marquee--stepped` + `data-flw-marquee-fps="8"` for a ticker)
 - `data-flw-range` — live readout for `.flw-range`, shift + arrows for ×10 steps
+- `data-flw-scrub` — drag-to-change number (`.flw-scrub`), shift ×10, click to type
 - `data-flw-accordion="single|multi"` — collapsible panes
 - `data-flw-tabs` — tab panels
 - `data-flw-bar` + `data-flw-bar-value="42"` — glyph progress bar (`data-flw-bar-color="blue"` for identity color)
@@ -71,7 +72,7 @@ Outputs `dist/flw.css` and `dist/flw.js`.
 npm run serve
 ```
 
-Open http://localhost:5173/overview — catalog of every token, utility, layout, and component.
+Open http://localhost:5173/overview — catalog of every token, utility, layout, and component. http://localhost:5173/synth shows the `.flw-app` tool shell in use.
 
 `serve` runs `build` first and copies `dist/` into `examples/dist/` so asset paths resolve when the examples folder is the server root. The server is `scripts/serve.js` — plain Node, no dependencies, works offline (`PORT=8080 npm run serve` for another port).
 
@@ -91,4 +92,5 @@ src/layout.css          page/grid/stack
 src/components/*.css    UI primitives
 js/flw.js               optional behavior
 examples/overview.html  debug catalog
+examples/synth.html     app shell example (drone-o-mat)
 ```

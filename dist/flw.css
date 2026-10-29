@@ -546,6 +546,107 @@ body {
   text-align: right;
 }
 
+/* App shell — full-height tool layout: bar / side · main · inspector / status.
+   Every area is optional; panels scroll on their own, main never scrolls. */
+.flw-app {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'bar bar bar'
+    'side main inspector'
+    'status status status';
+  height: 100vh;
+  height: 100dvh;
+  padding: var(--space-2);
+  overflow: hidden;
+}
+
+.flw-app__bar {
+  grid-area: bar;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.flw-app__title {
+  color: var(--c-white);
+  font-weight: 700;
+  margin-right: var(--space-2);
+}
+
+.flw-app__spacer {
+  flex: 1;
+}
+
+.flw-app__side,
+.flw-app__inspector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-dark-gray) transparent;
+}
+
+.flw-app__side {
+  grid-area: side;
+  width: var(--flw-app-side, 28ch);
+  margin-right: var(--space-2);
+}
+
+.flw-app__inspector {
+  grid-area: inspector;
+  width: var(--flw-app-inspector, 36ch);
+  margin-left: var(--space-2);
+}
+
+.flw-app__main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.flw-app__main > .flw-box {
+  flex: 1;
+}
+
+.flw-app__status {
+  grid-area: status;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  color: var(--c-gray);
+  font-size: var(--font-size-sm);
+}
+
+@media (max-width: 720px) {
+  .flw-app {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: 'bar' 'main' 'inspector' 'side' 'status';
+    height: auto;
+    overflow: visible;
+  }
+
+  .flw-app__main {
+    min-height: 60vh;
+  }
+
+  .flw-app__side,
+  .flw-app__inspector {
+    width: auto;
+    margin: var(--space-2) 0 0;
+    overflow: visible;
+  }
+}
+
 /* ── components/box.css ── */
 .flw-box {
   border: 1px solid var(--c-dark-gray);
@@ -594,6 +695,41 @@ body {
   min-height: 0;
   min-width: 0;
 }
+
+/* Flush content — canvas / WebGL / video fills the box edge to edge */
+.flw-box__content--flush {
+  /* auto basis: honors an explicit height when the box itself has none */
+  flex: 1 1 auto;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.flw-box__content--flush > canvas,
+.flw-box__content--flush > video,
+.flw-box__content--flush > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* HUD — readouts floating over a flush surface (fps, coords, zoom) */
+.flw-hud {
+  position: absolute;
+  display: flex;
+  gap: var(--space-2);
+  padding: 2px var(--space-2);
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--c-gray);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.flw-hud--tl { top: 0; left: 0; }
+.flw-hud--tr { top: 0; right: 0; }
+.flw-hud--bl { bottom: 0; left: 0; }
+.flw-hud--br { bottom: 0; right: 0; }
 
 /* ── components/button.css ── */
 .flw-btn {
@@ -917,6 +1053,128 @@ body {
 .flw-range__unit {
   margin-left: var(--space-1);
   color: var(--c-gray);
+}
+
+/* ── components/scrub.css ── */
+/* Scrubber — a number you drag sideways (Blender / Ableton style); click to type.
+   Use type="text" inputmode="decimal" so values always show a decimal point. */
+.flw-scrub {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  white-space: nowrap;
+}
+
+.flw-scrub__label {
+  color: var(--c-gray);
+  margin-right: var(--space-1);
+}
+
+.flw-scrub__input {
+  -moz-appearance: textfield;
+  appearance: textfield;
+  width: var(--flw-scrub-width, 6ch);
+  padding: 0;
+  border: none;
+  border-bottom: 1px dotted var(--c-gray);
+  background: transparent;
+  color: var(--c-white);
+  font-family: var(--font-mono);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  text-align: right;
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+
+.flw-scrub__input::-webkit-inner-spin-button,
+.flw-scrub__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.flw-scrub__input:hover {
+  border-bottom-color: var(--c-white);
+}
+
+/* Editing (typed) — solid line, text caret */
+.flw-scrub__input:focus {
+  outline: none;
+  border-bottom-style: solid;
+  border-bottom-color: var(--c-white);
+  cursor: text;
+}
+
+.flw-scrub__input:focus-visible {
+  outline: 1px solid var(--c-gray);
+  outline-offset: 2px;
+}
+
+.flw-scrub--active .flw-scrub__input {
+  color: var(--c-green);
+  border-bottom-color: var(--c-green);
+}
+
+.flw-scrub__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.flw-scrub__unit {
+  color: var(--c-gray);
+}
+
+/* ── components/choice.css ── */
+/* Choice — pick one of a few options that have no order (wave, blend mode, tool).
+   Radio group in the tab language: plain text, the picked one gets a frame. */
+.flw-choice {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.flw-choice__label {
+  min-width: 8ch;
+  color: var(--c-gray);
+}
+
+.flw-choice__option {
+  cursor: pointer;
+}
+
+.flw-choice__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.flw-choice__text {
+  display: inline-block;
+  padding: 0 var(--space-2);
+  border: 1px solid transparent;
+  color: var(--c-gray);
+  user-select: none;
+}
+
+.flw-choice__option:hover .flw-choice__text {
+  color: var(--c-white);
+}
+
+.flw-choice__input:checked + .flw-choice__text {
+  border-color: var(--c-gray);
+  color: var(--c-white);
+}
+
+.flw-choice__input:focus-visible + .flw-choice__text {
+  outline: 1px solid var(--c-gray);
+  outline-offset: 2px;
+}
+
+.flw-choice__input:disabled + .flw-choice__text {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* ── components/progress.css ── */

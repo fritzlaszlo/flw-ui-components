@@ -1,0 +1,51 @@
+/* Choice — pick one of a few options that have no order (wave, blend mode, tool).
+   Radio group in the tab language: plain text, the picked one gets a frame. */
+.flw-choice {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.flw-choice__label {
+  min-width: 8ch;
+  color: var(--c-gray);
+}
+
+.flw-choice__option {
+  cursor: pointer;
+}
+
+.flw-choice__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.flw-choice__text {
+  display: inline-block;
+  padding: 0 var(--space-2);
+  border: 1px solid transparent;
+  color: var(--c-gray);
+  user-select: none;
+}
+
+.flw-choice__option:hover .flw-choice__text {
+  color: var(--c-white);
+}
+
+.flw-choice__input:checked + .flw-choice__text {
+  border-color: var(--c-gray);
+  color: var(--c-white);
+}
+
+.flw-choice__input:focus-visible + .flw-choice__text {
+  outline: 1px solid var(--c-gray);
+  outline-offset: 2px;
+}
+
+.flw-choice__input:disabled + .flw-choice__text {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

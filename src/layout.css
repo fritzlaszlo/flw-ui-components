@@ -122,3 +122,104 @@
   color: var(--c-white);
   text-align: right;
 }
+
+/* App shell — full-height tool layout: bar / side · main · inspector / status.
+   Every area is optional; panels scroll on their own, main never scrolls. */
+.flw-app {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'bar bar bar'
+    'side main inspector'
+    'status status status';
+  height: 100vh;
+  height: 100dvh;
+  padding: var(--space-2);
+  overflow: hidden;
+}
+
+.flw-app__bar {
+  grid-area: bar;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.flw-app__title {
+  color: var(--c-white);
+  font-weight: 700;
+  margin-right: var(--space-2);
+}
+
+.flw-app__spacer {
+  flex: 1;
+}
+
+.flw-app__side,
+.flw-app__inspector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-dark-gray) transparent;
+}
+
+.flw-app__side {
+  grid-area: side;
+  width: var(--flw-app-side, 28ch);
+  margin-right: var(--space-2);
+}
+
+.flw-app__inspector {
+  grid-area: inspector;
+  width: var(--flw-app-inspector, 36ch);
+  margin-left: var(--space-2);
+}
+
+.flw-app__main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.flw-app__main > .flw-box {
+  flex: 1;
+}
+
+.flw-app__status {
+  grid-area: status;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  color: var(--c-gray);
+  font-size: var(--font-size-sm);
+}
+
+@media (max-width: 720px) {
+  .flw-app {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: 'bar' 'main' 'inspector' 'side' 'status';
+    height: auto;
+    overflow: visible;
+  }
+
+  .flw-app__main {
+    min-height: 60vh;
+  }
+
+  .flw-app__side,
+  .flw-app__inspector {
+    width: auto;
+    margin: var(--space-2) 0 0;
+    overflow: visible;
+  }
+}

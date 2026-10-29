@@ -1,0 +1,67 @@
+/* Scrubber — a number you drag sideways (Blender / Ableton style); click to type.
+   Use type="text" inputmode="decimal" so values always show a decimal point. */
+.flw-scrub {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  white-space: nowrap;
+}
+
+.flw-scrub__label {
+  color: var(--c-gray);
+  margin-right: var(--space-1);
+}
+
+.flw-scrub__input {
+  -moz-appearance: textfield;
+  appearance: textfield;
+  width: var(--flw-scrub-width, 6ch);
+  padding: 0;
+  border: none;
+  border-bottom: 1px dotted var(--c-gray);
+  background: transparent;
+  color: var(--c-white);
+  font-family: var(--font-mono);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  text-align: right;
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+
+.flw-scrub__input::-webkit-inner-spin-button,
+.flw-scrub__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.flw-scrub__input:hover {
+  border-bottom-color: var(--c-white);
+}
+
+/* Editing (typed) — solid line, text caret */
+.flw-scrub__input:focus {
+  outline: none;
+  border-bottom-style: solid;
+  border-bottom-color: var(--c-white);
+  cursor: text;
+}
+
+.flw-scrub__input:focus-visible {
+  outline: 1px solid var(--c-gray);
+  outline-offset: 2px;
+}
+
+.flw-scrub--active .flw-scrub__input {
+  color: var(--c-green);
+  border-bottom-color: var(--c-green);
+}
+
+.flw-scrub__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.flw-scrub__unit {
+  color: var(--c-gray);
+}

@@ -23,6 +23,8 @@ const cssFiles = [
   'components/form.css',
   'components/slider.css',
   'components/range.css',
+  'components/scrub.css',
+  'components/choice.css',
   'components/progress.css',
   'components/shade.css',
   'components/status.css',
